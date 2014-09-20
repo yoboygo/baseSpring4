@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+	targetNamespace="http://www.codecube.tk/schema/user"
+	xmlns:tns="http://www.codecube.tk/schema/user"
+	elementFormDefault="qualified">
+	
+	<element name="user">
+		<complexType>
+			<attribute name="id" type="string"></attribute>
+			<attribute name="userName" type="string"></attribute>
+			<attribute name="passWord" type="string"></attribute>
+			<attribute name="nickName" type="string"></attribute>
+		</complexType>
+	</element>
+	</schema>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<decorators defaultdir="/WEB-INF/decorators">
+<!-- 排除静态资源 -->
+	<excludes>
+		<pattern>/js/*</pattern>
+		<pattern>/css/*</pattern>
+		<pattern>/images/*</pattern>
+	</excludes>
+<!-- 	引入主菜单 -->
+    <decorator name="main" page="main.jsp">
+        <pattern>/*</pattern>
+    </decorator>
+<!--    测试装饰器 与主菜单冲突 -->
+    <decorator name="test" page="test.jsp">
+        <pattern>/test/*</pattern>
+    </decorator>
+</decorators>

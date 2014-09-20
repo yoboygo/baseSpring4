@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<tomcatProjectProperties>
+    <rootDir>src/test/webapp</rootDir>
+    <exportSource>false</exportSource>
+    <reloadable>true</reloadable>
+    <redirectLogger>false</redirectLogger>
+    <updateXml>true</updateXml>
+    <warLocation></warLocation>
+    <extraInfo></extraInfo>
+    <webPath></webPath>
+    <webClassPathEntries>
+        <webClassPathEntry>/baseSpring4/target/classes</webClassPathEntry>
+        <webClassPathEntry>/baseSpring4/target/test-classes</webClassPathEntry>
+        <webClassPathEntry>org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER</webClassPathEntry>
+    </webClassPathEntries>
+</tomcatProjectProperties>

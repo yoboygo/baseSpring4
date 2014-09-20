@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+     xmlns:p="http://www.springframework.org/schema/p"
+     xmlns:aop="http://www.springframework.org/schema/aop"
+     xmlns:tx="http://www.springframework.org/schema/tx"
+     xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+     xmlns:context="http://www.springframework.org/schema/context"
+     xsi:schemaLocation="
+	     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd
+	     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+	     http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-3.2.xsd
+	     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+	     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
+     
+	
+	<bean id="car" class="tk.codecube.test.custombeanlifecycle.Car" 
+		p:brand="美洲豹"
+		p:color="红色"
+		p:maxSpeed="800"
+		scope="prototype"
+		init-method="myInit" 
+		destroy-method="myDestroy"
+	/>
+	
+	<!--   	lookUp -->
+	<bean id="magicBox" class="tk.codecube.test.lookupandreplace.MagicBox">
+		<lookup-method name="getCar" bean="car"/>
+	</bean>
+	<!--   	replace -->
+	<bean id="boss1" class="tk.codecube.test.lookupandreplace.Boss1">
+		<replaced-method name="getCar" replacer="boss2"/>
+	</bean>
+	<bean id="boss2" class="tk.codecube.test.lookupandreplace.Boss2"></bean>
+	
+	<!--   	为ApplicationContext准备的Processor -->
+	<bean id="myBeanPostProcessor" class="tk.codecube.test.custombeanlifecycle.MyBeanPostProcessor"></bean>
+	<bean id="myBeanFactoryPostProcessor" class="tk.codecube.test.custombeanlifecycle.MyBeanFactoryPostProcessor"></bean>
+  	
+ </beans>
