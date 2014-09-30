@@ -171,11 +171,36 @@ public class TagCustomTest {
 	@Test
 	public void Base64UtilsTest()
 	{
-		String key = "123123";
-		System.out.println("key  ------->"+key);
-		String keyEncrypt = DESUtils.getEncryptString(key);
-		System.out.println("keyEncrypt-->"+keyEncrypt);
-		String keyDecrypt = DESUtils.getDecryptString(keyEncrypt);
-		System.out.println("keyDecrypt-->"+keyDecrypt);
+		String keys = "红旗C721,银色,180";
+		String[] keyArray = keys.split(",");
+		for(String key : keyArray)
+		{
+			System.out.println("key  ------->"+key);
+			String keyEncrypt = DESUtils.getEncryptString(key);
+			System.out.println("keyEncrypt-->"+keyEncrypt);
+			String keyDecrypt = DESUtils.getDecryptString(keyEncrypt);
+			System.out.println("keyDecrypt-->"+keyDecrypt);
+		}
+	}
+	
+	/**
+	 *  测试解密本地的配置参数
+	 * @auther Aimy
+	 * 2014年9月30日 下午3:28:24
+	 */
+	@Test
+	public void EncryptPlaceHolderConfigerTest()
+	{
+		/*
+		Resource res = new ClassPathResource("spring/spring-encryptplace-test.xml");
+		DefaultListableBeanFactory dlbf = new DefaultListableBeanFactory();
+		XmlBeanDefinitionReader xbdr = new XmlBeanDefinitionReader(dlbf);
+		xbdr.loadBeanDefinitions(res);
+		*/
+		
+		ApplicationContext ac = new ClassPathXmlApplicationContext("spring/spring-encryptplace-test.xml");
+		
+		Car car = (Car)ac.getBean("car");
+		car.introduce();
 	}
 }
