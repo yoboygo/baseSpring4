@@ -162,4 +162,20 @@ public class TagCustomTest {
 		Boss1 boss1 = (Boss1) dlb.getBean("boss1");
 		boss1.getCar().introduce();
 	}
+	
+	/**
+	 *  base64 DES 加密解密测试
+	 * @auther Aimy
+	 * 2014年9月30日 下午1:48:45
+	 */
+	@Test
+	public void Base64UtilsTest()
+	{
+		String key = "123123";
+		System.out.println("key  ------->"+key);
+		String keyEncrypt = DESUtils.getEncryptString(key);
+		System.out.println("keyEncrypt-->"+keyEncrypt);
+		String keyDecrypt = DESUtils.getDecryptString(keyEncrypt);
+		System.out.println("keyDecrypt-->"+keyDecrypt);
+	}
 }
