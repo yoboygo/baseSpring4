@@ -32,6 +32,7 @@ import tk.codecube.test.custombeanlifecycle.Popoj;
 import tk.codecube.test.customelement.User;
 import tk.codecube.test.lookupandreplace.Boss1;
 import tk.codecube.test.lookupandreplace.MagicBox;
+import tk.codecube.test.message.MailSender;
 
 /**
  * @author Aimy
@@ -240,6 +241,19 @@ public class TagCustomTest {
 		MessageFormat mf = new MessageFormat(pattenUS, Locale.US);
 		String msg2 = mf.format(params);
 		System.out.println("msg2: "+msg2);
-		
+	}
+	
+	/**
+	 *  Spring Message Test
+	 * @auther Aimy
+	 * 2014年10月10日 下午1:48:02
+	 */
+	@Test
+	@SuppressWarnings("resource")
+	public void MessageTest()
+	{
+		ApplicationContext ctx = new ClassPathXmlApplicationContext("spring/spring-message-test.xml");
+		MailSender ms = (MailSender)ctx.getBean("mailSender");
+		ms.SendMail("Jhon");
 	}
 }
