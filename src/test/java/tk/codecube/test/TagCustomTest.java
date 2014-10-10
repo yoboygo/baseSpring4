@@ -7,6 +7,13 @@
 package tk.codecube.test;
 
 
+import java.text.DateFormat;
+import java.text.MessageFormat;
+import java.text.NumberFormat;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Locale;
+
 import org.junit.Test;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.config.ConfigurableBeanFactory;
@@ -202,5 +209,37 @@ public class TagCustomTest {
 		
 		Car car = (Car)ac.getBean("car");
 		car.introduce();
+	}
+	
+	/**
+	 *  
+	 * @auther Aimy
+	 * 2014年10月10日 上午10:45:21
+	 */
+	@Test
+	public void LocaleUnilsTest()
+	{
+//		Locale local = Locale.getDefault();
+		//NumberFormat
+		NumberFormat nf = NumberFormat.getCurrencyInstance();
+		double dn = 1234567890f;
+		System.out.println("NumberFormat: "+nf.format(dn));
+		//DateFormate
+		DateFormat df = DateFormat.getDateInstance();
+		System.out.println("DateFormate: "+df.format(new Date()));
+		
+		//MessageFormat
+		String pattenCN = "{0} 你好，你于 {1} 在工商银行存入 {2} 元！";
+		String pattenUS = "At {1,time,short} ON {1,date,long} , {0} paid {2,number,currency} !";
+		
+		//Dynamic params
+		Object[] params = {"Jhon",new GregorianCalendar().getTime(),1E3};
+		String msg1 = MessageFormat.format(pattenCN, params);
+		System.out.println("msg1: "+msg1);
+		
+		MessageFormat mf = new MessageFormat(pattenUS, Locale.US);
+		String msg2 = mf.format(params);
+		System.out.println("msg2: "+msg2);
+		
 	}
 }
