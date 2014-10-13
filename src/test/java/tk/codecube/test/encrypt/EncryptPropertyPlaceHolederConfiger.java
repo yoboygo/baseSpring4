@@ -60,7 +60,7 @@ public class EncryptPropertyPlaceHolederConfiger extends
 		System.out.println(propertyName);
 		if(isNeedDecrypt(propertyName))
 			return DESUtils.getDecryptString(propertyValue);
-		return propertyValue;
+		return convertPropertyValue(propertyValue);
 	}
 	
 	

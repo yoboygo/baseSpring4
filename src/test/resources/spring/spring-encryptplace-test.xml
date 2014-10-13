@@ -17,7 +17,7 @@
 	<bean class="tk.codecube.test.encrypt.EncryptPropertyPlaceHolederConfiger" 
 			p:location="classpath:jdbc.properties" 
 			p:fileEncoding="UTF-8">
-		<constructor-arg type="java.lang.String">
+		<constructor-arg type="java.lang.String"> 
 			<value>brand,color</value>
 		</constructor-arg>
 	</bean>
