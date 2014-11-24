@@ -1,5 +1,5 @@
 /**
- * Car.java
+ * ICar.java
  * 
  * Aimy
  * 上午9:04:12
@@ -30,7 +30,7 @@ public class Car implements BeanFactoryAware, BeanNameAware, InitializingBean,
 	
 	public Car()
 	{
-		System.out.println("Car.Car():------------调用Car的构造函数-----------");
+		System.out.println("ICar.Car():------------调用Car的构造函数-----------");
 	}
 	
 	public String getBrand() {
@@ -111,7 +111,7 @@ public class Car implements BeanFactoryAware, BeanNameAware, InitializingBean,
 	 */
 	@Override
 	public void setBeanName(String name) {
-		System.out.println("Car.setBeanName()");
+		System.out.println("ICar.setBeanName()");
 		this.beanName = name;
 
 	}
@@ -121,7 +121,7 @@ public class Car implements BeanFactoryAware, BeanNameAware, InitializingBean,
 	 */
 	@Override
 	public void setBeanFactory(BeanFactory beanFactory) throws BeansException {
-		System.out.println("Car.setBeanFactory()");
+		System.out.println("ICar.setBeanFactory()");
 		this.beanFactory = beanFactory;
 	}
 
