@@ -4,7 +4,7 @@
  * Aimy
  * 下午2:11:38
  */
-package tk.codecube.test.aop.springcore;
+package tk.codecube.test.aop.springcore.entry;
 
 /**
  * @author Aimy
@@ -25,6 +25,11 @@ public class NaiveWaiter{
 	public void serveTo(String clientName) {
 		System.out.println("NaiveWaiter:Serve to "+clientName);
 
+	}
+	
+	public void smileTo(String clientName)
+	{
+		System.out.println("NaiveWaiter.smileTo()---->"+clientName);
 	}
 
 }

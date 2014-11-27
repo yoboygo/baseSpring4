@@ -13,8 +13,8 @@
 	     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
 	     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
 	
-	<bean id="waiterTarget" class="tk.codecube.test.aop.springcore.Waiter"/>
-	<bean id="sellerTarget" class="tk.codecube.test.aop.springcore.Seller"/>
+	<bean id="waiterTarget" class="tk.codecube.test.aop.springcore.entry.Waiter"/>
+	<bean id="sellerTarget" class="tk.codecube.test.aop.springcore.entry.Seller"/>
 	<bean id="greetingAdvice" class="tk.codecube.test.aop.springcore.GreetingBeforeAdvice"/>
 	<bean id="greetingAdvisor" class="tk.codecube.test.aop.springcore.GreetingAdvisor">
 		<property name="advice" ref="greetingAdvice" />  
@@ -55,7 +55,7 @@
 		
 <!-- 	流程切面 -->
 	<bean id="controlFlowPointcut" class="org.springframework.aop.support.ControlFlowPointcut">
-		<constructor-arg type="java.lang.Class" value="tk.codecube.test.aop.springcore.WaiterDelegate"></constructor-arg>
+		<constructor-arg type="java.lang.Class" value="tk.codecube.test.aop.springcore.entry.WaiterDelegate"></constructor-arg>
 		<constructor-arg type="java.lang.String" value="service"></constructor-arg>
 	</bean>
 	<bean id="controlFlowAdvisor" class="org.springframework.aop.support.DefaultPointcutAdvisor">

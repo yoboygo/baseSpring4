@@ -14,6 +14,8 @@ import org.springframework.aop.support.ComposablePointcut;
 import org.springframework.aop.support.ControlFlowPointcut;
 import org.springframework.aop.support.NameMatchMethodPointcut;
 
+import tk.codecube.test.aop.springcore.entry.WaiterDelegate;
+
 /**
  * @author Aimy
  * 2014年11月13日 上午11:26:25

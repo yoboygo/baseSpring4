@@ -10,9 +10,9 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import tk.codecube.test.aop.springcore.NaiveWaiter;
-import tk.codecube.test.aop.springcore.Waiter;
-import tk.codecube.test.aop.springcore.WaiterDelegate;
+import tk.codecube.test.aop.springcore.entry.NaiveWaiter;
+import tk.codecube.test.aop.springcore.entry.Waiter;
+import tk.codecube.test.aop.springcore.entry.WaiterDelegate;
 
 /**
  * @author Aimy
