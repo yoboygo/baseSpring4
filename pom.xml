@@ -7,6 +7,12 @@
     <properties>
 		<spring.framework.version>4.1.0.RELEASE</spring.framework.version>
 		<spring.security.version>4.1.0.RELEASE</spring.security.version>
+		<sitemesh.version>2.4.2</sitemesh.version>
+		<jstl.version>1.2</jstl.version>
+		<cglib.version>3.1</cglib.version>
+		<json.simple.version>1.1.1</json.simple.version>
+		<apache.commons.version>3.3.2</apache.commons.version>
+		<commons.codec.version>1.9</commons.codec.version>
 	</properties>
 	
 	<dependencies>
@@ -100,36 +106,36 @@
 	   <dependency>
 			<groupId>opensymphony</groupId>
 			<artifactId>sitemesh</artifactId>
-			<version>2.4.2</version>
+			<version>${sitemesh.version}</version>
 		</dependency>
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>jstl</artifactId>
-			<version>1.2</version>
+			<version>${jstl.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>com.googlecode.json-simple</groupId>
 			<artifactId>json-simple</artifactId>
-			<version>1.1.1</version>
+			<version>${json.simple.version}</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-			<version>3.3.2</version>
+			<version>${apache.commons.version}</version>
 		</dependency>
 		
 		<dependency>
 		<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
-			<version>1.9</version>
+			<version>${commons.codec.version}</version>
 		</dependency>
 		
 		<dependency>
 			<groupId>cglib</groupId>
 			<artifactId>cglib</artifactId>
-			<version>3.1</version>
+			<version>${cglib.version}</version>
 		</dependency>
 		
 	</dependencies>
