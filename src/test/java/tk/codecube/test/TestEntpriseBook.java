@@ -10,12 +10,13 @@ import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import tk.codecube.test.aop.springcore.NaiveWaiter;
 import tk.codecube.test.aop.springcore.Waiter;
 import tk.codecube.test.aop.springcore.WaiterDelegate;
 
 /**
  * @author Aimy
- * 2014年11月11日 下午4:23:25
+ * 2014年11月25日 下午2:16:58
  */
 public class TestEntpriseBook {
 	
@@ -96,5 +97,27 @@ public class TestEntpriseBook {
 		Waiter waiterComposable = (Waiter) ac.getBean("waiterTarget");
 		waiterComposable.serviceTo("Jhon");
 	}
+	
+	/**
+	 * 注解切面 :接口代理失败，去掉接口成功
+	 * <aop:aspectj-autoproxy ></aop:aspectj-autoproxy>
+	 * 可以自动创建切面
+	 * @auther Aimy
+	 * 2014年11月25日 下午2:17:00
+	 */
+	@Test
+	public void testPage227()
+	{
+		ApplicationContext ac = new ClassPathXmlApplicationContext(
+				"spring/spring-aop-aspectj-test.xml");
+		NaiveWaiter naiveWaiter = (NaiveWaiter) ac.getBean("naiveWaiter");
+		naiveWaiter.greetTo("Tom");
+		
+//		<aop:aspectj-autoproxy ></aop:aspectj-autoproxy>
+		Waiter waiterTarget = (Waiter) ac.getBean("waiterTarget");
+		waiterTarget.greetTo("Jhon");
+	}
+	
+	
 	
 }

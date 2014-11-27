@@ -83,5 +83,5 @@
 		<property name="interceptorNames"><value>greetingAdvice</value></property>
 		<property name="optimize"><value>true</value></property>
 	</bean>
-			
+	
  </beans>
