@@ -11,6 +11,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import tk.codecube.test.aop.springcore.entry.NaiveWaiter;
+import tk.codecube.test.aop.springcore.entry.NaughtyWaiter;
 import tk.codecube.test.aop.springcore.entry.Waiter;
 import tk.codecube.test.aop.springcore.entry.WaiterDelegate;
 
@@ -116,6 +117,21 @@ public class TestEntpriseBook {
 //		<aop:aspectj-autoproxy ></aop:aspectj-autoproxy>
 		Waiter waiterTarget = (Waiter) ac.getBean("waiterTarget");
 		waiterTarget.greetTo("Jhon");
+	}
+	
+	/**
+	 *  
+	 * @auther Aimy
+	 * 2014年11月27日 上午10:39:34
+	 */
+	@Test
+	public void testPage236()
+	{
+		ApplicationContext ac = new ClassPathXmlApplicationContext(
+				"spring/spring-aop-aspectj-test.xml");
+		NaughtyWaiter naughtyWaiter = (NaughtyWaiter) ac.getBean("naughtyWaiter");
+		naughtyWaiter.joke("Tom", 10);
+		
 	}
 	
 	

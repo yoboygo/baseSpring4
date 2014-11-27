@@ -25,4 +25,8 @@
 	<bean id="naiveWaiter" class="tk.codecube.test.aop.springcore.entry.NaiveWaiter"></bean>
 	<bean class="tk.codecube.test.aop.springcore.PreGreetingAspect"></bean>
 	
+<!-- 	AspectJ语法 -->
+	<!-- 	annotation -->
+	<bean id="naughtyWaiter" class="tk.codecube.test.aop.springcore.entry.NaughtyWaiter"></bean>
+	<bean class="tk.codecube.test.aop.annotation.config.AnnotationConfig"></bean>
  </beans>

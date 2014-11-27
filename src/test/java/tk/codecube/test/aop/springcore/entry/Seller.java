@@ -12,13 +12,8 @@ package tk.codecube.test.aop.springcore.entry;
  */
 public class Seller {
 
-	public void greetTo(String name)
+	public void sell(String goods)
 	{
-		System.out.println("seller greet to "+name);
-	}
-	
-	public void serviceTo(String name)
-	{
-		System.out.println("seller greet to "+name);
+		System.out.println("Seller.sell()--->"+goods);
 	}
 }

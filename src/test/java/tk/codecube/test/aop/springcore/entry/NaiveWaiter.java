@@ -10,7 +10,7 @@ package tk.codecube.test.aop.springcore.entry;
  * @author Aimy
  * 2014年11月25日 下午2:11:38
  */
-public class NaiveWaiter{
+public class NaiveWaiter extends Waiter{
 
 	/* (non-Javadoc)
 	 * @see tk.codecube.test.aop.springcore.IWaiter#greetTo(java.lang.String)
