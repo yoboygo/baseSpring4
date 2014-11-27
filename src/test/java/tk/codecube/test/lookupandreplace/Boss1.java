@@ -17,7 +17,7 @@ public class Boss1 {
 	public Car getCar()
 	{
 		Car car = new Car();
-		car.setColor("宝马");
+		car.setColor("Boss1 宝马");
 		return car;
 	}
 }

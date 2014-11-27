@@ -25,7 +25,7 @@ public class Boss2 implements MethodReplacer{
 	public Object reimplement(Object obj, Method method, Object[] args)
 			throws Throwable {
 		Car car = new Car();
-		car.setBrand("Replaced奥迪");
+		car.setBrand("Boss2 Replaced奥迪");
 		return car;
 	}
 
