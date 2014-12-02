@@ -9,16 +9,24 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	
 	<title>
+		<%-- 目标页面的title --%>
 		<decorator:title />
 	</title>
-	
     <link rel="stylesheet" href="<c:url value='/css/ext-all.css'/>" type="text/css"></link>
+	
+	<script type="text/javascript" src="<c:url value='/js/jquery/jquery-1.11.0.js'/> "></script>
    	<script type="text/javascript" src="<c:url value='/js/ext/bootstrap.js'/> "></script>
 	<script type="text/javascript" src="<c:url value='/js/ext/ext-lang-zh_CN.js'/> "></script>
-	<script type="text/javascript" src="<c:url value='/js/jquery/jquery-1.11.0.js'/> "></script>
+	<script type="text/javascript" src="<c:url value='/js/funsioncharts/fusioncharts.js'/> "></script>
+	<script type="text/javascript" src="<c:url value='/js/funsioncharts/fusioncharts.charts.js'/> "></script>
+	<script type="text/javascript" src="<c:url value='/js/funsioncharts/themes/fusioncharts.theme.fint.js'/> "></script>
+	<script type="text/javascript" src="<c:url value='/js/funsioncharts/themes/fusioncharts.theme.zune.js'/> "></script>
+	
+	<%-- 目标页面的head --%>
+	<decorator:head />
 </head>
 <body>
-    
+    <%-- 目标页面的body --%>
      <decorator:body />
     
 </body>
