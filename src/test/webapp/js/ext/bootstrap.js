@@ -42,12 +42,22 @@ Build date: 2013-05-16 14:36:50 (f9be68accb407158ba2b1be2c226a6ce1f649314)
     for (i = 0, ln = scripts.length; i < ln; i++) {
         scriptSrc = scripts[i].src;
 
+        /*文件原内容
         match = scriptSrc.match(/bootstrap\.js$/);
 
         if (match) {
             path = scriptSrc.substring(0, scriptSrc.length - match[0].length);
             break;
         }
+        */
+        //解决首次加载页面JS地址后边自动添加JsessionId的情况
+        match = scriptSrc.match(/bootstrap\.js/);
+
+        if (match) {
+            path = scriptSrc.substring(0, scriptSrc.indexOf(match));
+            break;
+        }
+        
     }
 
     if (queryString.match('(\\?|&)debug') !== null) {

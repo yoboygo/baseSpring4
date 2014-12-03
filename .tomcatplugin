@@ -7,7 +7,7 @@
     <updateXml>true</updateXml>
     <warLocation></warLocation>
     <extraInfo></extraInfo>
-    <webPath></webPath>
+    <webPath>/web</webPath>
     <webClassPathEntries>
         <webClassPathEntry>/baseSpring4/target/classes</webClassPathEntry>
         <webClassPathEntry>/baseSpring4/target/test-classes</webClassPathEntry>

@@ -6,6 +6,9 @@
  */
 package tk.codecube.test.web.main;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -29,17 +32,4 @@ public class SpringMVCTestController {
 		
 		return "/index";
 	}
-	
-	/**
-	 * 跳转到fusionCharts
-	 * @auther Aimy
-	 * @return
-	 * 2014年12月2日 上午10:07:14
-	 */
-	@RequestMapping("/fcharts")
-	public String toFusionCharts()
-	{
-		return "/fusioncharts";
-	}
-
 }

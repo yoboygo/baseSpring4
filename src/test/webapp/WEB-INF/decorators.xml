@@ -5,6 +5,7 @@
 		<pattern>/js/*</pattern>
 		<pattern>/css/*</pattern>
 		<pattern>/images/*</pattern>
+		<pattern>*decorators=no*</pattern>
 	</excludes>
 <!-- 	引入主菜单 -->
     <decorator name="main" page="main.jsp">
