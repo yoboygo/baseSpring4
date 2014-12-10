@@ -15,10 +15,12 @@ import org.w3c.dom.Element;
  * @author Aimy
  * 2014年9月3日 下午9:55:04
  */
+@SuppressWarnings("unchecked")
 public class UserBeanDefinitionParser extends
 		AbstractSingleBeanDefinitionParser {
 
 	//element 对应的类
+	@SuppressWarnings("rawtypes")
 	protected Class getBeanClass(Element element)
 	{
 		return User.class;

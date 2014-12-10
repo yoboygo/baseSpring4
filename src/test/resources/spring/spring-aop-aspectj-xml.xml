@@ -14,13 +14,13 @@
 	     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd">
 	
 <!-- 	基于@AspectJ的切面		 -->
-<!-- 	<aop:aspectj-autoproxy ></aop:aspectj-autoproxy> -->
+	<aop:aspectj-autoproxy ></aop:aspectj-autoproxy>
 	<bean id="naiveWaiter" class="tk.codecube.test.aop.springcore.entry.NaiveWaiter"></bean>
 	<bean class="tk.codecube.test.aop.springcore.PreGreetingAspect"></bean>
 	<bean class="org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator"></bean>
 	
 <!-- 	AspectJ语法 -->
 	<!-- 	annotation -->
-	<bean id="naughtyWaiter" class="tk.codecube.test.aop.springcore.entry.NaughtyWaiter"></bean>
-	<bean class="tk.codecube.test.aop.annotation.config.AnnotationConfig"></bean>
+<!-- 	<bean id="naughtyWaiter" class="tk.codecube.test.aop.springcore.entry.NaughtyWaiter"></bean> -->
+<!-- 	<bean class="tk.codecube.test.aop.annotation.config.AnnotationConfig"></bean> -->
  </beans>

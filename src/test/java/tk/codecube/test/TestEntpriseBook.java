@@ -109,7 +109,7 @@ public class TestEntpriseBook {
 	 * 2014年12月9日 下午4:57:57
 	 */
 	@Test
-	public void testPage227_242_proxy()
+	public void testPage227_PDF242_proxy()
 	{
 		IWaiter naiveWaiter = new NaiveWaiter();
 		
@@ -123,60 +123,66 @@ public class TestEntpriseBook {
 	}
 	
 	
-	/**	success
+	/**	failuer
 	 *  XML配置测试
 	 * @author Aimy
 	 * 2014年12月10日 上午8:45:43
 	 */
 	@Test
-	public void testPage227_242_proxy_xml()
+	public void testPage227_PDF242_proxy_xml()
 	{
-		IWaiter naiveWaiter = new NaiveWaiter();
+		ApplicationContext ac = new ClassPathXmlApplicationContext(
+				"spring/spring-aop-aspectj-xml.xml");
+		NaiveWaiter naiveWaiter = (NaiveWaiter) ac.getBean("naiveWaiter");
+		naiveWaiter.greetTo("Tom");
 		
-		AspectJProxyFactory aspectjFactory = new AspectJProxyFactory();
-		aspectjFactory.setTarget(naiveWaiter);
-		aspectjFactory.addAspect(PreGreetingAspect.class);
-		
-		IWaiter proxy = aspectjFactory.getProxy();
-		proxy.greetTo("Tom");
-		proxy.serviceTo("Tom");
 	}
 
-	/**failure
-	 * 注解切面 :接口代理失败，去掉接口成功
+	/**
+	 * success
 	 * <aop:aspectj-autoproxy ></aop:aspectj-autoproxy>
 	 * 可以自动创建切面
 	 * @author Aimy
 	 * 2014年11月25日 下午2:17:00
 	 */
 	@Test
-	public void testPage227_242()
+	public void testPage227_PDF242_proxyDef()
 	{
-		// TODO Error failure
 		ApplicationContext ac = new ClassPathXmlApplicationContext(
-				"spring/spring-aop-aspectj-auto.xml");
-		NaiveWaiter naiveWaiter = (NaiveWaiter) ac.getBean("naiveWaiter");
+				"spring/spring-aop-aspectj-auto-def.xml");
+		//autoproxy 默认是jdk代理，创建的是接口代理，所以直接声明类是不能讲AOP逻辑织入的
+//		NaiveWaiter naiveWaiter = (NaiveWaiter) ac.getBean("naiveWaiter"); //failure
+		
+		IWaiter naiveWaiter = (IWaiter) ac.getBean("naiveWaiter"); // success
 		naiveWaiter.greetTo("Tom");
 		
-		Waiter waiterTarget = (Waiter) ac.getBean("waiterTarget");
-		waiterTarget.greetTo("Jhon");
+		//page236_PDF251
+		IWaiter naughtyWaiter = (IWaiter) ac.getBean("naughtyWaiter");
+		naughtyWaiter.serviceTo("Join");
+		
 	}
 	
 	/**
-	 *  
+	 * 
+	 * <aop:aspectj-autoproxy ></aop:aspectj-autoproxy>
+	 * 可以自动创建切面
 	 * @author Aimy
-	 * 2014年11月27日 上午10:39:34
+	 * 2014年11月25日 下午2:17:00
 	 */
 	@Test
-	public void testPage236()
+	public void testPage227_PDF242_proxyClass()
 	{
 		ApplicationContext ac = new ClassPathXmlApplicationContext(
-				"spring/spring-aop-aspectj-test.xml");
+				"spring/spring-aop-aspectj-auto-class.xml");
+		//autoproxy 默认是jdk代理，创建的是接口代理，所以直接声明类是不能讲AOP逻辑织入的
+//		NaiveWaiter naiveWaiter = (NaiveWaiter) ac.getBean("naiveWaiter"); //failure
+		
+		NaiveWaiter naiveWaiter = (NaiveWaiter) ac.getBean("naiveWaiter"); // success
+		naiveWaiter.greetTo("Tom");
+		//Page236
 		NaughtyWaiter naughtyWaiter = (NaughtyWaiter) ac.getBean("naughtyWaiter");
 		naughtyWaiter.joke("Tom", 10);
 		
 	}
-	
-	
 	
 }

@@ -22,7 +22,7 @@ public class BankOrderChecketed {
 	
 	/**
 	 *  
-	 * @auther Aimy
+	 * @author Aimy
 	 * @param args
 	 * 2014年9月26日 上午10:48:37
 	 */
@@ -50,7 +50,7 @@ public class BankOrderChecketed {
 
 	/**
 	 *  get the incom and put the line to afterArray
-	 * @auther Aimy
+	 * @author Aimy
 	 * @param index
 	 * @param args
 	 * @param listPoint
@@ -74,7 +74,7 @@ public class BankOrderChecketed {
 	 *  calculate by formual
 	 *  # --> pre
 	 *  $ --> next
-	 * @auther Aimy
+	 * @author Aimy
 	 * @param index
 	 * @param args
 	 * @param formual
@@ -92,7 +92,7 @@ public class BankOrderChecketed {
 
 	/**
 	 *  return the flag position in array
-	 * @auther Aimy
+	 * @author Aimy
 	 * @param line
 	 * @return
 	 * 2014年9月26日 上午10:52:14
