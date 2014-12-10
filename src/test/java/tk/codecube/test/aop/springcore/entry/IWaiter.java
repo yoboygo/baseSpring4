@@ -12,5 +12,5 @@ package tk.codecube.test.aop.springcore.entry;
  */
 public interface IWaiter {
 	public void greetTo(String clientName);
-	public void serveTo(String clientName);
+	public void serviceTo(String clientName);
 }

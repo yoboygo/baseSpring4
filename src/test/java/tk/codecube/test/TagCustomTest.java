@@ -41,12 +41,13 @@ import tk.codecube.test.message.MailSender;
 /**
  * @author Aimy 2014年9月3日 下午10:21:04
  */
+@SuppressWarnings({ "resource", "deprecation" })
 public class TagCustomTest {
 
 	/**
 	 * 描述:解析自定义标签
 	 * 
-	 * @auther Aimy
+	 * @author Aimy
 	 * @param args
 	 *            2014年9月3日 下午10:21:04
 	 */
@@ -63,7 +64,7 @@ public class TagCustomTest {
 	/**
 	 * 描述:对Spring解析完成的Bean进行处理
 	 * 
-	 * @auther Aimy 2014年9月10日 上午8:59:16
+	 * @author Aimy 2014年9月10日 上午8:59:16
 	 */
 	@Test
 	public void springBeanLife() {
@@ -97,7 +98,7 @@ public class TagCustomTest {
 	/**
 	 * 描述:Spring4.1.0的写法
 	 * 
-	 * @auther Aimy 2014年9月18日 上午8:52:00
+	 * @author Aimy 2014年9月18日 上午8:52:00
 	 */
 	@Test
 	public void springBeanLife4() {
@@ -126,7 +127,7 @@ public class TagCustomTest {
 	/**
 	 * 描述:测试ApplicationContext And BeanFacoryPostProcessor
 	 * 
-	 * @auther Aimy 2014年9月18日 上午11:04:31
+	 * @author Aimy 2014年9月18日 上午11:04:31
 	 */
 	@Test
 	public void springBeanLifeBeanFactory() {
@@ -146,7 +147,7 @@ public class TagCustomTest {
 	/**
 	 * 描述:springLookUpTest
 	 * 
-	 * @auther Aimy 2014年9月19日 上午9:19:44
+	 * @author Aimy 2014年9月19日 上午9:19:44
 	 */
 	@Test
 	public void springLookUpTest() {
@@ -168,7 +169,7 @@ public class TagCustomTest {
 	/**
 	 * 描述:SpringReplacedTest
 	 * 
-	 * @auther Aimy 2014年9月19日 上午9:57:39
+	 * @author Aimy 2014年9月19日 上午9:57:39
 	 */
 	@Test
 	public void springReplacedTest() {
@@ -185,7 +186,7 @@ public class TagCustomTest {
 	/**
 	 * base64 DES 加密解密测试
 	 * 
-	 * @auther Aimy 2014年9月30日 下午1:48:45
+	 * @author Aimy 2014年9月30日 下午1:48:45
 	 */
 	@Test
 	public void Base64UtilsTest() {
@@ -203,7 +204,7 @@ public class TagCustomTest {
 	/**
 	 * 测试解密本地的配置参数
 	 * 
-	 * @auther Aimy 2014年9月30日 下午3:28:24
+	 * @author Aimy 2014年9月30日 下午3:28:24
 	 */
 	@Test
 	public void EncryptPlaceHolderConfigerTest() {
@@ -224,7 +225,7 @@ public class TagCustomTest {
 
 	/**
 	 * 
-	 * @auther Aimy 2014年10月10日 上午10:45:21
+	 * @author Aimy 2014年10月10日 上午10:45:21
 	 */
 	@Test
 	public void LocaleUnilsTest() {
@@ -254,10 +255,9 @@ public class TagCustomTest {
 	/**
 	 * Spring Message Test
 	 * 
-	 * @auther Aimy 2014年10月10日 下午1:48:02
+	 * @author Aimy 2014年10月10日 下午1:48:02
 	 */
 	@Test
-	@SuppressWarnings("resource")
 	public void MessageTest() {
 		ApplicationContext ctx = new ClassPathXmlApplicationContext(
 				"spring/spring-message-test.xml");
@@ -268,7 +268,7 @@ public class TagCustomTest {
 	/**
 	 * AOP性能监视测试001
 	 * 
-	 * @auther Aimy 2014年10月11日 下午12:55:50
+	 * @author Aimy 2014年10月11日 下午12:55:50
 	 */
 	@Test
 	public void AopMointorTest() {
@@ -280,7 +280,7 @@ public class TagCustomTest {
 	/**
 	 * Jdk proxy Implement
 	 * 
-	 * @auther Aimy 2014年10月13日 下午1:40:02
+	 * @author Aimy 2014年10月13日 下午1:40:02
 	 */
 	@Test
 	public void AopMointorTestJdkProxy() {
@@ -296,7 +296,7 @@ public class TagCustomTest {
 	}
 	/**
 	 *  Cglib Implement
-	 * @auther Aimy
+	 * @author Aimy
 	 * 2014年10月13日 下午3:34:57
 	 */
 	@Test

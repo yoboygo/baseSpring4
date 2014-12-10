@@ -19,6 +19,7 @@ import tk.codecube.test.propertyediter.TdateEntry;
  * @author Aimy
  * 2014年10月13日 下午10:45:21
  */
+@SuppressWarnings("resource")
 public class TestBeginChapterSix {
 	
 	/**
@@ -28,7 +29,7 @@ public class TestBeginChapterSix {
 	 * attempt. In case you need control over the instantiation process of
 	 * {@link PropertyEditor}s, use a {@link PropertyEditorRegistrar} to register
 	 * them. 
-	 * @auther Aimy
+	 * @author Aimy
 	 * 2014年10月14日 下午8:48:55
 	 */
 	@Test
@@ -41,11 +42,10 @@ public class TestBeginChapterSix {
 	
 	/**
 	 *  Text set date as string in xml
-	 * @auther Aimy
+	 * @author Aimy
 	 * 2014年10月13日 下午11:03:23
 	 */
 	@Test
-	@SuppressWarnings("resource")
 	public void DateRegisterInXmlTest()
 	{
 		ApplicationContext ctx = new ClassPathXmlApplicationContext("spring/spring-beandateregister-test.xml");

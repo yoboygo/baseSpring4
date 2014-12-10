@@ -6,11 +6,7 @@
  */
 package tk.codecube.test.aop.springcore;
 
-import java.lang.reflect.Method;
-
-import org.springframework.aop.MethodMatcher;
 import org.springframework.aop.Pointcut;
-import org.springframework.aop.support.ComposablePointcut;
 import org.springframework.aop.support.ControlFlowPointcut;
 import org.springframework.aop.support.NameMatchMethodPointcut;
 
@@ -24,7 +20,7 @@ public class GreetingComposablePointcut{
 
 	public Pointcut getInstersectionPointcut()
 	{
-		ComposablePointcut cp = new ComposablePointcut();
+//		ComposablePointcut cp = new ComposablePointcut();
 		Pointcut pt1 = new ControlFlowPointcut(WaiterDelegate.class,"service"); 
 		
 		NameMatchMethodPointcut pt2 = new NameMatchMethodPointcut();

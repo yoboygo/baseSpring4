@@ -19,7 +19,7 @@ public class PreGreetingAspect {
 	@Before("execution(* greetTo(..))")
 	public void beforeGreeting()
 	{
-		System.out.println("How are you!");
+		System.out.println("Before Greet: How are you!");
 	}
 
 }
