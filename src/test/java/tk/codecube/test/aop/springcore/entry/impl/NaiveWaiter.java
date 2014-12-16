@@ -4,7 +4,9 @@
  * Aimy
  * 下午2:11:38
  */
-package tk.codecube.test.aop.springcore.entry;
+package tk.codecube.test.aop.springcore.entry.impl;
+
+import tk.codecube.test.aop.springcore.entry.IWaiter;
 
 /**
  * @author Aimy

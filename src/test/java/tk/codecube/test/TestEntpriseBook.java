@@ -12,11 +12,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import tk.codecube.test.aop.springcore.PreGreetingAspect;
+import tk.codecube.test.aop.springcore.entry.ISeller;
 import tk.codecube.test.aop.springcore.entry.IWaiter;
-import tk.codecube.test.aop.springcore.entry.NaiveWaiter;
-import tk.codecube.test.aop.springcore.entry.NaughtyWaiter;
-import tk.codecube.test.aop.springcore.entry.Waiter;
-import tk.codecube.test.aop.springcore.entry.WaiterDelegate;
+import tk.codecube.test.aop.springcore.entry.impl.NaiveWaiter;
+import tk.codecube.test.aop.springcore.entry.impl.NaughtyWaiter;
+import tk.codecube.test.aop.springcore.entry.impl.Waiter;
+import tk.codecube.test.aop.springcore.entry.impl.WaiterDelegate;
 
 /**
  * @author Aimy
@@ -151,7 +152,7 @@ public class TestEntpriseBook {
 		ApplicationContext ac = new ClassPathXmlApplicationContext(
 				"spring/spring-aop-aspectj-auto-def.xml");
 		//autoproxy 默认是jdk代理，创建的是接口代理，所以直接声明类是不能讲AOP逻辑织入的
-//		NaiveWaiter naiveWaiter = (NaiveWaiter) ac.getBean("naiveWaiter"); //failure
+		//NaiveWaiter naiveWaiter = (NaiveWaiter) ac.getBean("naiveWaiter"); //failure
 		
 		IWaiter naiveWaiter = (IWaiter) ac.getBean("naiveWaiter"); // success
 		naiveWaiter.greetTo("Tom");
@@ -182,7 +183,27 @@ public class TestEntpriseBook {
 		//Page236
 		NaughtyWaiter naughtyWaiter = (NaughtyWaiter) ac.getBean("naughtyWaiter");
 		naughtyWaiter.joke("Tom", 10);
-		
 	}
+	
+	/**
+	 *  AspectJ this 测试
+	 *  this 之匹配目标类中的方法，不会匹配通过增强织入的方法
+	 *  target 貌似不支持，目前没有找到官方的文档
+	 * @author Aimy
+	 * 2014年12月16日 上午10:54:32
+	 */
+	@Test
+	public void testPage243_PDF258()
+	{
+		//TODO this 没有匹配通过增强织入的方法，target失效
+		ApplicationContext ac = new ClassPathXmlApplicationContext(
+				"spring/spring-aop-aspectj-auto-def.xml");
+		IWaiter naiveWaiter = (IWaiter) ac.getBean("naiveWaiter"); // success
+		naiveWaiter.greetTo("Tom");
+		naiveWaiter.serviceTo("Tom");
+		
+		((ISeller)naiveWaiter).sell("Wood");
+	}
+	
 	
 }

@@ -4,9 +4,10 @@
  * Aimy
  * 上午10:30:15
  */
-package tk.codecube.test.aop.springcore.entry;
+package tk.codecube.test.aop.springcore.entry.impl;
 
 import tk.codecube.test.aop.annotation.NeedTest;
+import tk.codecube.test.aop.springcore.entry.IWaiter;
 
 /**
  * @author Aimy

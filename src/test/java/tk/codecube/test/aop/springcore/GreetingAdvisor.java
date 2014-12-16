@@ -11,7 +11,7 @@ import java.lang.reflect.Method;
 import org.springframework.aop.ClassFilter;
 import org.springframework.aop.support.StaticMethodMatcherPointcutAdvisor;
 
-import tk.codecube.test.aop.springcore.entry.Waiter;
+import tk.codecube.test.aop.springcore.entry.impl.Waiter;
 
 /**
  * @author Aimy

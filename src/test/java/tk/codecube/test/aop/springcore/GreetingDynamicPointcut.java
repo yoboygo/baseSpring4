@@ -13,7 +13,7 @@ import java.util.List;
 import org.springframework.aop.ClassFilter;
 import org.springframework.aop.support.DynamicMethodMatcherPointcut;
 
-import tk.codecube.test.aop.springcore.entry.Waiter;
+import tk.codecube.test.aop.springcore.entry.impl.Waiter;
 
 /**
  * @author Aimy

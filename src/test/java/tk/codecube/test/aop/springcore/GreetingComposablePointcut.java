@@ -10,7 +10,7 @@ import org.springframework.aop.Pointcut;
 import org.springframework.aop.support.ControlFlowPointcut;
 import org.springframework.aop.support.NameMatchMethodPointcut;
 
-import tk.codecube.test.aop.springcore.entry.WaiterDelegate;
+import tk.codecube.test.aop.springcore.entry.impl.WaiterDelegate;
 
 /**
  * @author Aimy
