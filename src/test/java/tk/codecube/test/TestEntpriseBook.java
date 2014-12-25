@@ -133,8 +133,8 @@ public class TestEntpriseBook {
 	public void testPage227_PDF242_proxy_xml()
 	{
 		ApplicationContext ac = new ClassPathXmlApplicationContext(
-				"spring/spring-aop-aspectj-xml.xml");
-		NaiveWaiter naiveWaiter = (NaiveWaiter) ac.getBean("naiveWaiter");
+				"spring/spring-aop-aspectj-auto-def.xml");
+		IWaiter naiveWaiter = (IWaiter) ac.getBean("naiveWaiter");
 		naiveWaiter.greetTo("Tom");
 		
 	}
@@ -202,8 +202,45 @@ public class TestEntpriseBook {
 		naiveWaiter.greetTo("Tom");
 		naiveWaiter.serviceTo("Tom");
 		
-		((ISeller)naiveWaiter).sell("Wood");
+		((ISeller)naiveWaiter).sell("Wood","Jhon");
 	}
 	
+	/**
+	 *  环绕增强，切面访问目标参数
+	 * @author Aimy
+	 * 2014年12月23日 下午4:00:05
+	 */
+	@Test
+	public void testPage247_PDF262()
+	{
+		ApplicationContext ac = new ClassPathXmlApplicationContext(
+				"spring/spring-aop-aspectj-auto-class.xml");
+		//autoproxy 默认是jdk代理，创建的是接口代理，所以直接声明类是不能讲AOP逻辑织入的
+//		NaiveWaiter naiveWaiter = (NaiveWaiter) ac.getBean("naiveWaiter"); //failure
+		
+		NaiveWaiter naiveWaiter = (NaiveWaiter) ac.getBean("naiveWaiter"); // success
+		naiveWaiter.greetTo("Tom");
+		
+//		page248_pdf_263
+		naiveWaiter.smileTo("Tom", 2);
+	}
+	
+	
+	/**
+	 *  代理绑定注解对象
+	 * @author Aimy
+	 * 2014年12月25日 下午12:50:22
+	 */
+	@Test
+	public void testPage250_PDF265()
+	{
+		//TODO failuer
+		ApplicationContext ac = new ClassPathXmlApplicationContext(
+				"spring/spring-aop-aspectj-auto-class.xml");
+		
+		IWaiter naughtyWaiter = (IWaiter) ac.getBean("naughtyWaiter"); // success
+		
+		naughtyWaiter.serviceTo("Tome");
+	}
 	
 }

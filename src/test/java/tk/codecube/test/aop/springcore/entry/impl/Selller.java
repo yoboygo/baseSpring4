@@ -18,8 +18,8 @@ public class Selller implements ISeller{
 	 * @see tk.codecube.test.aop.springcore.entry.ISeller#sell(java.lang.String)
 	 */
 	@Override
-	public void sell(String goods) {
-		System.out.println("Selller.sell()-->"+goods);
+	public void sell(String goods,String clientName) {
+		System.out.println("Selller.sell()-->"+goods+" TO "+clientName);
 	}
 
 }

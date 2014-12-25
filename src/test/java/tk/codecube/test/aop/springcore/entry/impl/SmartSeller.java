@@ -20,17 +20,17 @@ public class SmartSeller implements ISeller{
 	 * @auther Aimy
 	 * 2014年11月27日 上午10:10:29
 	 */
-	protected void showGoods(String goods,String clientName)
+	protected void showGoods(String goods)
 	{
-		System.out.println("SmartSeller.showGoods()--->"+goods+" TO "+clientName);
+		System.out.println("SmartSeller.showGoods()--->"+goods);
 	}
 
 	/* (non-Javadoc)
 	 * @see tk.codecube.test.aop.springcore.entry.ISeller#sell(java.lang.String)
 	 */
 	@Override
-	public void sell(String goods) {
-		System.out.println("SmartSeller.sell()--->"+goods);
+	public void sell(String goods,String clientName) {
+		System.out.println("SmartSeller.sell()--->"+goods+" TO "+clientName);
 	}
 
 }

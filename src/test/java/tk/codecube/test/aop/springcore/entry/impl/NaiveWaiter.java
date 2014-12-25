@@ -6,6 +6,7 @@
  */
 package tk.codecube.test.aop.springcore.entry.impl;
 
+import tk.codecube.test.aop.annotation.NeedTest;
 import tk.codecube.test.aop.springcore.entry.IWaiter;
 
 /**
@@ -17,6 +18,7 @@ public class NaiveWaiter implements IWaiter{
 	/* (non-Javadoc)
 	 * @see tk.codecube.test.aop.springcore.IWaiter#greetTo(java.lang.String)
 	 */
+	@NeedTest
 	public void greetTo(String clientName) {
 		System.out.println("NaiveWaiter:Greet to "+clientName);
 	}
@@ -29,9 +31,9 @@ public class NaiveWaiter implements IWaiter{
 
 	}
 	
-	public void smileTo(String clientName)
+	public void smileTo(String clientName,int minute)
 	{
-		System.out.println("NaiveWaiter.smileTo()---->"+clientName);
+		System.out.println("NaiveWaiter.smileTo()---->"+clientName+" "+minute+"s");
 	}
 
 }
