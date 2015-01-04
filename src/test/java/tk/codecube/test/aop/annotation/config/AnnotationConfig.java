@@ -119,17 +119,38 @@ public class AnnotationConfig implements Ordered{
 	}
 	
 	/**
-	 *  绑定注解对象
+	 *  绑定注解对象 failure
 	 * @author Aimy
 	 * @param needTest
 	 * 2014年12月25日 下午12:45:46
 	 */
 	@Before("@within(needTest)")
-	public void bindTypeAnnoObject(NeedTest needTest)
+	public void bindTypeAnnoObjectWithin(NeedTest needTest)
 	{
 		System.err.println("----------bindTypeAnnoObject Start-----------");
-		System.out.println("bindTypeAnnoObject:"+needTest.getClass().getName());
+		System.out.println("bindTypeAnnoObject--->within:"+needTest.getClass().getName());
 		System.err.println("----------bindTypeAnnoObject End-----------");
 	}
 	
+	@Before("@target(needTest)")
+	public void bindTypeAnnoObjectTarget(NeedTest needTest)
+	{
+		System.err.println("----------bindTypeAnnoObject Start-----------");
+		System.out.println("bindTypeAnnoObject--->Target:"+needTest.getClass().getName());
+		System.err.println("----------bindTypeAnnoObject End-----------");
+	}
+	
+	/**
+	 *  绑定返回值
+	 * @author Aimy
+	 * @param retVal
+	 * 2015年1月4日 下午9:08:49
+	 */
+	@AfterReturning(value="target(tk.codecube.test.aop.springcore.entry.impl.SmartSeller)",returning="retVal")
+	public void bindReturnValue(int retVal)
+	{
+		System.err.println("----------bindReturnValue Start-----------");
+		System.out.println("ReturnValue:"+retVal);
+		System.err.println("----------bindReturnValue End-----------");
+	}
 }

@@ -22,6 +22,7 @@ public class NaughtyWaiter implements IWaiter{
 	 * @param time
 	 * 2014年11月27日 上午10:31:59
 	 */
+	@NeedTest
 	public void joke(String clientName,int time)
 	{
 		System.out.println("NaughtyWaiter.joke()--->"+clientName+" ON "+time+" minutes.");

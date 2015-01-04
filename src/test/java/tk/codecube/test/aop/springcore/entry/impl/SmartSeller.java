@@ -6,6 +6,8 @@
  */
 package tk.codecube.test.aop.springcore.entry.impl;
 
+import org.apache.commons.lang3.RandomUtils;
+
 import tk.codecube.test.aop.springcore.entry.ISeller;
 
 
@@ -29,8 +31,9 @@ public class SmartSeller implements ISeller{
 	 * @see tk.codecube.test.aop.springcore.entry.ISeller#sell(java.lang.String)
 	 */
 	@Override
-	public void sell(String goods,String clientName) {
+	public int sell(String goods,String clientName) {
 		System.out.println("SmartSeller.sell()--->"+goods+" TO "+clientName);
+		return RandomUtils.nextInt(0, 100);
 	}
 
 }

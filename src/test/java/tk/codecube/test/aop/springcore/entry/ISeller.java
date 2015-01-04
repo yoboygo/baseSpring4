@@ -12,5 +12,5 @@ package tk.codecube.test.aop.springcore.entry;
  */
 public interface ISeller {
 
-	public void sell(String goods,String clientName);
+	public int sell(String goods,String clientName);
 }

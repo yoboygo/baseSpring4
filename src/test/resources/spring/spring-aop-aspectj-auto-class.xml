@@ -21,5 +21,6 @@
 	<!-- 	AspectJ语法 -->
 	<!-- 	annotation -->
 	<bean id="naughtyWaiter" class="tk.codecube.test.aop.springcore.entry.impl.NaughtyWaiter"></bean>
+	<bean id="smartSeller" class="tk.codecube.test.aop.springcore.entry.impl.SmartSeller"></bean>
 	<bean class="tk.codecube.test.aop.annotation.config.AnnotationConfig"></bean>
  </beans>

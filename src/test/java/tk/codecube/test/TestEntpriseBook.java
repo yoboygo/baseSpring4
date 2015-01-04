@@ -16,6 +16,7 @@ import tk.codecube.test.aop.springcore.entry.ISeller;
 import tk.codecube.test.aop.springcore.entry.IWaiter;
 import tk.codecube.test.aop.springcore.entry.impl.NaiveWaiter;
 import tk.codecube.test.aop.springcore.entry.impl.NaughtyWaiter;
+import tk.codecube.test.aop.springcore.entry.impl.SmartSeller;
 import tk.codecube.test.aop.springcore.entry.impl.Waiter;
 import tk.codecube.test.aop.springcore.entry.impl.WaiterDelegate;
 
@@ -225,7 +226,6 @@ public class TestEntpriseBook {
 		naiveWaiter.smileTo("Tom", 2);
 	}
 	
-	
 	/**
 	 *  代理绑定注解对象
 	 * @author Aimy
@@ -238,9 +238,18 @@ public class TestEntpriseBook {
 		ApplicationContext ac = new ClassPathXmlApplicationContext(
 				"spring/spring-aop-aspectj-auto-class.xml");
 		
-		IWaiter naughtyWaiter = (IWaiter) ac.getBean("naughtyWaiter"); // success
+		NaughtyWaiter naughtyWaiter = (NaughtyWaiter) ac.getBean("naughtyWaiter"); // success
+		IWaiter naughtyIWaiter = (IWaiter) ac.getBean("naughtyWaiter"); // success
+		SmartSeller smartSeller = (SmartSeller) ac.getBean("smartSeller"); // success
 		
+		//绑定注解对象 failure
 		naughtyWaiter.serviceTo("Tome");
+		naughtyIWaiter.serviceTo("I Tome");
+		
+		//绑定返回值 success
+		System.out.println(smartSeller.sell("Wood", "Jhon"));
+		
 	}
+	
 	
 }
