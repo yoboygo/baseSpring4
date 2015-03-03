@@ -7,6 +7,7 @@
     <properties>
 		<spring.framework.version>4.1.0.RELEASE</spring.framework.version>
 		<spring.security.version>4.1.0.RELEASE</spring.security.version>
+		<hibernate.version>4.3.8.Final</hibernate.version>
 		<sitemesh.version>2.4.2</sitemesh.version>
 		<jstl.version>1.2</jstl.version>
 		<cglib.version>3.1</cglib.version>
@@ -103,7 +104,17 @@
 			<artifactId>spring-webmvc-portlet</artifactId>
 			<version>${spring.framework.version}</version>
 		</dependency>
+		
 	<!--Spring about end-->
+	
+	<!--Hibernate about start-->
+		<dependency>
+		   <groupId>org.hibernate</groupId>
+		   <artifactId>hibernate-core</artifactId>
+		   <version>${hibernate.version}</version>
+		</dependency>
+	<!--Hibernate about end-->
+	
 	   <dependency>
 			<groupId>opensymphony</groupId>
 			<artifactId>sitemesh</artifactId>
