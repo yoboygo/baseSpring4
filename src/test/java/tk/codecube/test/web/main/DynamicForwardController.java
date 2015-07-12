@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/forward")
 public class DynamicForwardController {
 
-	/**
+	/**O
 	 *  动态跳转方法
 	 * @auther Aimy
 	 * @param request
