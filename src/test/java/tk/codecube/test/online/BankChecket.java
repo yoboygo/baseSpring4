@@ -71,6 +71,9 @@ public class BankChecket {
 		String[] preLineArray = preLine.split(SPLIT_FLAG);
 		String[] lineArray = line.split(SPLIT_FLAG);
 		
+		//add for delete alert
+		System.out.println(preLineArray);
+		
 		List<Integer> flagIndexInArray = getFlagIndexInArray(lineArray);
 		
 		switch(flagIndexInArray.size())

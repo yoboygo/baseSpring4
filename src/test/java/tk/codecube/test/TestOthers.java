@@ -9,10 +9,7 @@ package tk.codecube.test;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-
-import javax.imageio.stream.FileImageInputStream;
 
 import org.junit.Test;
 
@@ -32,15 +29,22 @@ public class TestOthers {
 	@Test
 	public void testReadData()
 	{
+		DataInputStream dis = null;
 		try {
-			DataInputStream dis = new DataInputStream(new FileInputStream(new File("./src/test/resources/testData.data")));
+			dis = new DataInputStream(new FileInputStream(new File("./src/test/resources/testData.data")));
 			System.out.println(dis.read());
 			
 //			File file = new File("");
 //			System.out.println(file.getCanonicalPath());
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally{
+				try {
+					if(dis != null)
+						dis.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 		}
 	}
 }

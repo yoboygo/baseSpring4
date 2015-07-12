@@ -32,6 +32,9 @@ public class MyJob implements Job{
 		String size = (String) dataMap.get("size");
 		
 		ApplicationContext ctx =  (ApplicationContext) dataMap.get("applicationContext");
+		
+		System.out.println(ctx.getAttributeNames());
+		
 		System.out.println("size:"+size);
 		
 		dataMap.put("size",size+"0");

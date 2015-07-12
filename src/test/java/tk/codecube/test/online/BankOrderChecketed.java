@@ -87,6 +87,7 @@ public class BankOrderChecketed {
 		String[] preLineArray = args[index-1].split(";");
 		String[] lineArray = args[index].split(";");
 		
+		System.out.println(preLineArray+":"+lineArray);
 		return null;
 	}
 
