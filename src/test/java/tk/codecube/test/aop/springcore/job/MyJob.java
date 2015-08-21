@@ -9,10 +9,10 @@ package tk.codecube.test.aop.springcore.job;
 import java.util.Calendar;
 import java.util.Map;
 
-import org.apache.catalina.core.ApplicationContext;
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
+import org.springframework.context.ApplicationContext;
 
 /**
  * 任务调度测试
