@@ -9,10 +9,9 @@ package tk.codecube.test;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-
-import javax.imageio.stream.FileImageInputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -43,4 +42,10 @@ public class TestOthers {
 			e.printStackTrace();
 		}
 	}
+	
+	public <E> List<E> getInit()
+	{
+		return new ArrayList<E>();
+	}
+	
 }

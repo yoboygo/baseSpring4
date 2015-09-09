@@ -7,6 +7,7 @@
 package tk.codecube.test.web.main;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
@@ -23,9 +24,10 @@ public class SpringMVCTestController {
 	}
 	
 	@RequestMapping
-	public String index()
+	public String index(@RequestHeader(value="Accept-Encoding",required=false) String encoder)
 	{
-		System.out.println("SpringMVCTestController.index()");
+		
+		System.out.println("SpringMVCTestController.index()----->Encoding:"+encoder);
 		
 		return "/index";
 	}

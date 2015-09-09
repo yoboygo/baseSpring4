@@ -53,4 +53,14 @@
     <welcome-file>/WEB-INF/jsp/index.jsp</welcome-file>
   </welcome-file-list>
  
+<!--   自定义的servlet -->
+  <servlet>
+     <servlet-name>myservlet</servlet-name>
+    <servlet-class>tk.codecube.test.servlet.MyServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>myservlet</servlet-name>
+    <url-pattern>/ms</url-pattern>
+  </servlet-mapping>
+  
 </web-app>
