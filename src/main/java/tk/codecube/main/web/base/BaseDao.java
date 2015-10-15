@@ -4,7 +4,7 @@
  * Aimy
  * 下午1:26:02
  */
-package tk.codecube.test.web.base;
+package tk.codecube.main.web.base;
 
 import java.lang.reflect.ParameterizedType;
 import java.util.List;

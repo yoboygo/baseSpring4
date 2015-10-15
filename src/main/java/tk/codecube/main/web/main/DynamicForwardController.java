@@ -4,7 +4,7 @@
  * Aimy
  * 下午1:11:15
  */
-package tk.codecube.test.web.main;
+package tk.codecube.main.web.main;
 
 import javax.servlet.http.HttpServletRequest;
 

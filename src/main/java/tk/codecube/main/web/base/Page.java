@@ -4,7 +4,7 @@
  * Aimy
  * 下午3:54:08
  */
-package tk.codecube.test.web.base;
+package tk.codecube.main.web.base;
 
 import java.io.Serializable;
 import java.util.ArrayList;

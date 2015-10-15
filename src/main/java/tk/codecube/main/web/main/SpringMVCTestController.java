@@ -4,7 +4,7 @@
  * Aimy
  * 下午11:09:31
  */
-package tk.codecube.test.web.main;
+package tk.codecube.main.web.main;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestHeader;
