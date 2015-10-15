@@ -4,7 +4,7 @@
  * Aimy
  * 下午1:24:13
  */
-package tk.codecube.main.web.base;
+package tk.codecube.wx.base;
 
 import java.io.Serializable;
 

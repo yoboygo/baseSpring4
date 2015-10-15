@@ -4,7 +4,7 @@
  * Aimy
  * 下午3:09:50
  */
-package tk.codecube.base;
+package tk.codecube.wx.base;
 
 import java.util.ArrayList;
 

@@ -16,7 +16,7 @@
    	<!--   	加载注解驱动 -->
   	<mvc:annotation-driven/>  
 	<!--    自动装配 -->
-  	<context:component-scan base-package="tk.codecube.test.web"></context:component-scan>
+  	<context:component-scan base-package="tk.codecube.wx"></context:component-scan>
 	<!--   	静态资源 -->
   	<mvc:resources location="/js/" mapping="/js/**"/>
   	<mvc:resources location="/css/" mapping="/css/**"/>
