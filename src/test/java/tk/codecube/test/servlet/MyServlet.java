@@ -27,6 +27,7 @@ public class MyServlet extends HttpServlet {
 	public MyServlet() {
 		System.out.println("MyServlet:实例化");
 	}
+	
 	/**
 	 * 
 	 */
