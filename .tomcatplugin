@@ -7,7 +7,7 @@
     <updateXml>true</updateXml>
     <warLocation></warLocation>
     <extraInfo></extraInfo>
-    <webPath>/web</webPath>
+    <webPath>/wx</webPath>
     <webClassPathEntries>
         <webClassPathEntry>/baseSpring4/target/classes</webClassPathEntry>
         <webClassPathEntry>org.eclipse.m2e.MAVEN2_CLASSPATH_CONTAINER</webClassPathEntry>

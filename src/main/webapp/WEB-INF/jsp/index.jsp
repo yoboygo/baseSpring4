@@ -7,7 +7,7 @@
 <title>Index Page</title>
 <script type="text/javascript">
 	$(function(){
-		alert($("div:first").attr("id"));
+	//	alert($("div:first").attr("id"));
 	});
 </script>
 </head>

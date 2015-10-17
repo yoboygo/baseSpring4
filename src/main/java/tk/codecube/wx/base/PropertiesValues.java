@@ -11,7 +11,7 @@ public class PropertiesValues {
 	/**
 	 * 来自微信服务器的Token
 	 */
-	public static final String TOKEN = "Aimy";
+	public static final String TOKEN = "AimyFly";
 	
 	
 }
