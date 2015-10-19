@@ -48,4 +48,23 @@ public class TestOthers {
 		return new ArrayList<E>();
 	}
 	
+	@Test
+	public void testList()
+	{
+		ArrayList<Integer> al  = new ArrayList<Integer>();
+		for(int i=0;i<10;++i)
+		{
+			al.add(i);
+		}
+		printList(al);
+	}
+	//使用递归遍历List
+	public void printList(ArrayList<Integer> list)
+	{
+		System.out.println(list.remove(0));
+		if(list.size() > 0)
+		{
+			printList(list);
+		}
+	}
 }

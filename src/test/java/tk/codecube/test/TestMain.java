@@ -22,6 +22,7 @@ public class TestMain {
 		for(String fieldValue :args)
 		{
 			double dbValue = 0.0;
+			System.out.println(20-1.8);
 			if(fieldValue.indexOf("0")==0)//以0开头，默认为数字
 			{
 				System.out.println("fieldValue="+fieldValue);
