@@ -37,6 +37,7 @@ public class TestOthers {
 			
 //			File file = new File("");
 //			System.out.println(file.getCanonicalPath());
+			dis.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

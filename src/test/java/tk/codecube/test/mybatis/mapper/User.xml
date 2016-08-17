@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="tk.codecube.test.mybatis.dao.IUser">
-  
+
   <select id="selectById" parameterType="long" resultType="tk.codecube.test.mybatis.model.User">
     SELECT * FROM USER WHERE ID = #{id}
+  </select>
+  
+  <select id="findAll" resultType="tk.codecube.test.mybatis.model.User">
+    SELECT * FROM USER
   </select>
   
   <insert id="add" parameterType="tk.codecube.test.mybatis.model.User" keyColumn="id">
@@ -17,4 +21,12 @@
 	</where>
   </delete>
   
+  <update id="update" parameterType="tk.codecube.test.mybatis.model.User">
+  	UPDATE USER 
+  	<set>
+  		<if test="userName != null">userName = #{userName},</if>
+	  	<if test="passWord != null">passWord = #{passWord}</if>
+  	</set> 
+  	WHERE ID = #{id}
+  </update>
 </mapper>

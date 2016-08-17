@@ -1,5 +1,7 @@
 package tk.codecube.test.mybatis.main;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Test;
@@ -28,10 +30,33 @@ public class MybatisTest {
 		
 		SqlSession session = sessionFactory.openSession();
 		IUser iUser = session.getMapper(IUser.class);
-		
 		User user = iUser.selectById(1);
-		
+		session.close();
+		ac.close();
 		System.out.println(user.getUserName());
+	}
+	
+	/**
+	 * @Description 查找所有
+	 * @author jianlong.song bpqqop@163.com 
+	 * @date 2016年7月27日 上午11:01:02
+	 */
+	@Test
+	public void findAllUserTest()
+	{
+		ClassPathXmlApplicationContext ac = new ClassPathXmlApplicationContext("/spring/spring-mybatis.xml");
+		SqlSessionFactory sessionFactory = (SqlSessionFactory) ac.getBean("sqlSessionFactory");
+		
+		SqlSession session = sessionFactory.openSession();
+		IUser iUser = session.getMapper(IUser.class);
+		
+		List<User> userList = iUser.findAll();
+		for(User u:userList)
+		{
+			System.out.println(u.getUserName());
+		}
+		ac.close();
+		session.close();
 	}
 	
 	/**
@@ -52,7 +77,8 @@ public class MybatisTest {
 		user.setUserName("蒙牛");
 		user.setPassWord("222222");
 		iUser.add(user);
-		
+		session.close();
+		ac.close();
 		System.out.println(user.getUserName());
 	}
 	
@@ -70,6 +96,32 @@ public class MybatisTest {
 		SqlSession session = sessionFactory.openSession();
 		IUser iUser = session.getMapper(IUser.class);
 		iUser.deleteById(2);
+		session.close();
+		ac.close();
+	}
+	
+	/**
+	 * @Description 更新测试
+	 * @author jianlong.song bpqqop@163.com 
+	 * @date 2016年7月27日 上午11:12:22
+	 */
+	@Test
+	public void updateUserTest()
+	{
+		ClassPathXmlApplicationContext ac = new ClassPathXmlApplicationContext("/spring/spring-mybatis.xml");
+		SqlSessionFactory sessionFactory = (SqlSessionFactory) ac.getBean("sqlSessionFactory");
+		
+		SqlSession session = sessionFactory.openSession();
+		IUser iUser = session.getMapper(IUser.class);
+		
+		User u = new User();
+		u.setId(1);
+		u.setUserName("th");
+		u.setPassWord("111111");
+		iUser.update(u);
+		
+		session.close();
+		ac.close();
 	}
 	
 }
