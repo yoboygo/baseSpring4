@@ -142,9 +142,9 @@ public class PatternTest {
 	@Test
 	public void testPatternFactoryNew()
 	{
-		PizzaIngredientFactory nypif = new NYPizzaIngredientFactory();
-		
-		tk.codecube.test.pattern.factory.re.Pizza piz = new tk.codecube.test.pattern.factory.re.NYPizzaStore().orderPizza("cheese");
-		piz.bake();
+		tk.codecube.test.pattern.factory.re.NYPizzaStore nypizStore = new tk.codecube.test.pattern.factory.re.NYPizzaStore();
+		tk.codecube.test.pattern.factory.re.Pizza piz = nypizStore.orderPizza("cheese");
+		tk.codecube.test.pattern.factory.re.ChicagoPizzaStore chpizStore = new tk.codecube.test.pattern.factory.re.ChicagoPizzaStore();
+		tk.codecube.test.pattern.factory.re.Pizza piz2 = chpizStore.orderPizza("cheese");
 	}
 }
