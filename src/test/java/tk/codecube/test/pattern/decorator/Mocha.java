@@ -1,6 +1,6 @@
 package tk.codecube.test.pattern.decorator;
 
-public class Mocha extends Dectorator {
+public class Mocha extends Decorator {
 
 	private Beverage be;
 	public Mocha(Beverage be) {

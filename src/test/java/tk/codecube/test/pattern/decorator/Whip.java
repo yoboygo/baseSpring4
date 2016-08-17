@@ -1,6 +1,6 @@
 package tk.codecube.test.pattern.decorator;
 
-public class Whip extends Dectorator {
+public class Whip extends Decorator {
 
 	private Beverage be;
 	

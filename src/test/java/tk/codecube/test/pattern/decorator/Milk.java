@@ -1,6 +1,6 @@
 package tk.codecube.test.pattern.decorator;
 
-public class Milk extends Dectorator {
+public class Milk extends Decorator {
 
 	private Beverage be;
  	public Milk(Beverage be) {
