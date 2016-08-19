@@ -19,6 +19,13 @@ import tk.codecube.test.pattern.factory.ChiocagoPizzaStore;
 import tk.codecube.test.pattern.factory.NYPizzaStore;
 import tk.codecube.test.pattern.factory.NYStyleCheesePizza;
 import tk.codecube.test.pattern.factory.Pizza;
+import tk.codecube.test.pattern.factory.command.CeilingFan;
+import tk.codecube.test.pattern.factory.command.CeilingFanCommand;
+import tk.codecube.test.pattern.factory.command.Door;
+import tk.codecube.test.pattern.factory.command.GarageDoorOpenCommand;
+import tk.codecube.test.pattern.factory.command.Light;
+import tk.codecube.test.pattern.factory.command.LightOpenCommand;
+import tk.codecube.test.pattern.factory.command.SimpleRemoteController;
 import tk.codecube.test.pattern.factory.re.CheesePizza;
 import tk.codecube.test.pattern.factory.re.NYPizzaIngredientFactory;
 import tk.codecube.test.pattern.factory.re.PizzaIngredientFactory;
@@ -147,4 +154,43 @@ public class PatternTest {
 		tk.codecube.test.pattern.factory.re.ChicagoPizzaStore chpizStore = new tk.codecube.test.pattern.factory.re.ChicagoPizzaStore();
 		tk.codecube.test.pattern.factory.re.Pizza piz2 = chpizStore.orderPizza("cheese");
 	}
+	
+	/**
+	 * @Description 命令模式
+	 * @author jianlong.song bpqqop@163.com 
+	 * @date 2016年8月18日 下午2:31:03
+	 */
+	@Test
+	public void testPatternCommand()
+	{
+		SimpleRemoteController src = new SimpleRemoteController();
+		
+		Light l = new Light();
+		LightOpenCommand loc = new LightOpenCommand(l);
+		
+		Door d = new Door();
+		GarageDoorOpenCommand gdoc = new GarageDoorOpenCommand(d);
+		
+		CeilingFan cf = new CeilingFan("电风扇~");
+		CeilingFanCommand cfc = new CeilingFanCommand(cf);
+		
+		src.addDoSomebody(0, loc);
+		src.addDoSomebody(1, gdoc);
+		src.addDoSomebody(2, cfc);
+		
+		src.doButtonPressed(0);
+		src.doButtonPressed(1);
+		
+		src.resetButternPressed();
+		src.resetButternPressed();
+		
+		src.doButtonPressed(2);
+		src.doButtonPressed(2);
+		src.doButtonPressed(2);
+		src.doButtonPressed(2);
+		src.doButtonPressed(2);
+		src.resetButternPressed();
+	}
+	
+	
 }
