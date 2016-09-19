@@ -12,6 +12,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -136,6 +137,17 @@ public class TestOthers {
 			System.out.println("校验失败！");
 		}
 		
+	}
+	
+	/**
+	 * 测试浮点型精度
+	 */
+	@Test
+	public void testDecimalScale()
+	{
+		DecimalFormat df = new DecimalFormat("#0.00");
+		double num = 1602.5f;
+		System.out.println(df.format(num));
 	}
 	
 }
