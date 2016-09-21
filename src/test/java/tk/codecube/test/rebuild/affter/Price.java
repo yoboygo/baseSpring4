@@ -2,7 +2,6 @@ package tk.codecube.test.rebuild.affter;
 
 public abstract class Price {
 
-	private MovieType movieType;
 	private double baseCharge;
 	private double chargePerDay;
 
@@ -16,14 +15,6 @@ public abstract class Price {
 
 	public double getChargePerDay() {
 		return chargePerDay;
-	}
-
-	public MovieType getMovieType() {
-		return movieType;
-	}
-
-	public void setMovieType(MovieType movieType) {
-		this.movieType = movieType;
 	}
 
 	public void setChargePerDay(double chargePerDay) {
