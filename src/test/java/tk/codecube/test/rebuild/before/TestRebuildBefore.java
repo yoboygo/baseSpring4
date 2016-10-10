@@ -41,6 +41,8 @@ public class TestRebuildBefore {
 		c2.addRentail(rt2);
 
 		c1.printOrderDetail();
+		m2.setType(MovieType.NORMAL);
+		c1.printOrderDetail();
 		c2.printOrderDetail();
 
 	}

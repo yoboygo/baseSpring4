@@ -12,6 +12,7 @@ public class Rentail {
 	private static Map<MovieType, Double> pricePerDayForMovie;
 	static {
 		pricePerDayForMovie = new HashMap<MovieType, Double>();
+		
 		pricePerDayForMovie.put(MovieType.NORMAL, 2.0);
 		pricePerDayForMovie.put(MovieType.CHILD, 1.0);
 		pricePerDayForMovie.put(MovieType.NEW, 3.0);
