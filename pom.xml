@@ -13,12 +13,14 @@
 		<dbcp.version>1.4</dbcp.version>
 		<mysql-connector.version>5.1.39</mysql-connector.version>
 		<sitemesh.version>2.4.2</sitemesh.version>
+		<json-lib.version>2.4</json-lib.version>
 		<jstl.version>1.2</jstl.version>
 		<cglib.version>3.1</cglib.version>
 		<json.simple.version>1.1.1</json.simple.version>
 		<apache.commons.version>3.3.2</apache.commons.version>
 		<commons.codec.version>1.9</commons.codec.version>
 		<quartz.version>2.2.1</quartz.version>
+		<poi.version>3.15</poi.version>
 	</properties>
 	
 	<dependencies>
@@ -173,7 +175,12 @@
 			<artifactId>json-simple</artifactId>
 			<version>${json.simple.version}</version>
 		</dependency>
-
+<!-- https://mvnrepository.com/artifact/net.sf.json-lib/json-lib -->
+<!-- 		<dependency> -->
+<!-- 		    <groupId>net.sf.json-lib</groupId> -->
+<!-- 		    <artifactId>json-lib</artifactId> -->
+<!-- 		    <version>${json-lib.version}</version> -->
+<!-- 		</dependency> -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
@@ -203,7 +210,19 @@
 		    <artifactId>quartz-jobs</artifactId>
 		    <version>${quartz.version}</version>
 		</dependency>
-		
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi -->
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi</artifactId>
+		    <version>${poi.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml -->
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-ooxml</artifactId>
+		    <version>${poi.version}</version>
+		</dependency>
+				
 	</dependencies>
   
   
