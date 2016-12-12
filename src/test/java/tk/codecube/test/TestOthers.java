@@ -14,14 +14,17 @@ import java.io.InputStream;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.XMLConstants;
-import javax.xml.transform.Source;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
+
+import junit.framework.Assert;
 
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
@@ -29,6 +32,10 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.junit.Test;
 import org.xml.sax.SAXException;
+
+import tk.codecube.test.aop.springcore.entry.IWaiter;
+import tk.codecube.test.aop.springcore.entry.impl.NaiveWaiter;
+import tk.codecube.test.aop.springcore.entry.impl.SimpleWaiter;
 
 /**
  * 除Spring之外的各种小的Case
@@ -150,4 +157,54 @@ public class TestOthers {
 		System.out.println(df.format(num));
 	}
 	
+	@Test
+	public void testInstance()
+	{
+		NaiveWaiter nw = new NaiveWaiter();
+		SimpleWaiter sw = new SimpleWaiter();
+		
+		System.out.println(nw instanceof IWaiter);
+		System.out.println(sw instanceof IWaiter);
+		
+	}
+	
+	  /**
+     * 按小时分组合计
+     * @param jsonStr
+     * @return
+     */
+    private String sumCountByHour(String jsonStr)
+    {
+    	Assert.assertNotNull(jsonStr);
+    	JSONArray datas = JSONArray.fromObject(jsonStr);
+    	JSONArray results = new JSONArray();
+    	Map<String,String[]> tmpData = new HashMap<String, String[]>();
+    	for(Object item : datas)
+    	{
+    		JSONObject data = JSONObject.fromObject(item);
+    		//时间格式
+    		String time = data.getString("x");
+    		String[] count = (String[])data.get("y");
+    		
+    		String hh = time.split(":")[0];
+    		
+    		String[] preCount = tmpData.get(hh);
+    		if(preCount == null)
+    		{
+    			preCount = new String[]{"0"};
+    		}
+
+			long preCountValue = Long.parseLong(preCount[0]);
+			long countValue = Long.parseLong(count[0]);
+			long totalCount = preCountValue+countValue;
+			count[0] = String.valueOf(totalCount);
+			tmpData.put(hh, count);
+    	}
+    	
+    	for(Map.Entry<String, String[]> entry : tmpData.entrySet())
+    	{
+    		results.add(JSONObject.fromObject(entry));
+    	}
+    	return results.toString();
+    }
 }
