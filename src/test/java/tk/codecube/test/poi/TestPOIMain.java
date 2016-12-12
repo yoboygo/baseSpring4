@@ -1,18 +1,18 @@
 package tk.codecube.test.poi;
 
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-import org.apache.catalina.filters.RemoteIpFilter.XForwardedRequest;
-import org.apache.poi.EncryptedDocumentException;
-import org.apache.poi.hssf.extractor.ExcelExtractor;
 import org.apache.poi.hssf.util.CellReference;
-import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
-import org.apache.poi.ss.formula.eval.FunctionEval;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.FormulaEvaluator;
@@ -20,11 +20,11 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.junit.Test;
-import org.springframework.aop.ThrowsAdvice;
 
-import tk.codecube.test.poi.model.ExcelParseCommonModel;
+import tk.codecube.test.poi.model.AbstractExcelParseModel;
 
 /**
  * POI测试主类
@@ -33,6 +33,7 @@ import tk.codecube.test.poi.model.ExcelParseCommonModel;
  */
 public class TestPOIMain {
 
+	private DecimalFormat df = new DecimalFormat("####################0.00");
 	/**
 	 * 测试动态计算Excel公式
 	 * @throws Exception 
@@ -43,14 +44,9 @@ public class TestPOIMain {
 		String path = "D:\\config\\YEB_SYQXJGRB_20161121.xls";
 		
 		//剩余期限结构日报表
-		ExcelParseCommonModel syqxjgrb = new ExcelParseCommonModel(){
-
-			@Override
-			public void init() {
-				this.setColumnFormulaMap(getSyqxjgrbColumnFormulaMap());
-			}
-			
-		};
+		@SuppressWarnings("unchecked")
+		Class<AbstractExcelParseModel> classModel = (Class<AbstractExcelParseModel>) ClassLoader.getSystemClassLoader().loadClass("tk.codecube.test.poi.model.Yeb_syqxjgrb");
+		AbstractExcelParseModel syqxjgrb = classModel.newInstance();
 		
 		InputStream inp = new FileInputStream(path);
 		//InputStream inp = new FileInputStream("workbook.xlsx");
@@ -66,7 +62,7 @@ public class TestPOIMain {
 		Map<String,String> ret = new LinkedHashMap<String, String>();
 		for(String col : columnMap.keySet())
 		{
-			Cell retCell = firstRow.createCell(0);
+			Cell retCell = firstRow.createCell(firstRow.getLastCellNum()+1);
 			String formula = columnMap.get(col);
 			//自己实现SUM
 			if(formula.startsWith("SUM("))
@@ -86,6 +82,136 @@ public class TestPOIMain {
 		System.out.println(JSONObject.toJSONString(ret));
 		
 	}
+
+	/**
+	 * 从Excel中读取数据，返回数据集合List<Map<String,String>>
+	 * 适用于一个Excel（sheet）返回多条数据
+	 * @param inp
+	 * @param columnFormulaMap:列公式Map
+	 * @param rowStart:取值在Excel中开始的行数		
+	 * @param recordLines:一条记录在Excel中占得行数
+	 * @return
+	 * @throws Exception
+	 */
+	public List<Map<String, String>> readRecordsFromExcel(InputStream inp,
+			Map<String, String> columnFormulaMap,String rowStartStr,String recordLinesStr,int rowEndOffset,String flagFields) throws Exception {
+		List<Map<String,String>> ret = new ArrayList<Map<String,String>>();
+		
+		Workbook wb = WorkbookFactory.create(inp);
+		FormulaEvaluator evaluator = wb.getCreationHelper().createFormulaEvaluator();
+		Sheet sheet = wb.getSheetAt(0);
+		wb.setForceFormulaRecalculation(true);
+		int rowEnd = sheet.getLastRowNum() + rowEndOffset;//最后一行
+		Row firstRow = sheet.getRow(0);
+		int retCellCol = firstRow.getLastCellNum()+1;
+		int rowStart = rowEnd;
+		int recordLines = rowEnd;
+		if(rowStartStr != null)
+		{
+			rowStart = Integer.parseInt(rowStartStr);
+		}
+		if(recordLinesStr != null)
+		{
+			recordLines = Integer.parseInt(recordLinesStr);
+		}
+		int recordsCounter = (rowEnd - rowStart + 1)/recordLines;
+		
+		System.out.println("rowEnd:"+rowEnd+ "记录条数："+(recordsCounter+1));
+		
+		for(int i = 0 ; i<=recordsCounter ; ++i)
+		{
+			Map<String,String> data = new LinkedHashMap<String, String>();
+			for(String col : columnFormulaMap.keySet())
+			{
+				//在第一行的最后一个单元格后，创建一个新的单元格用于计算公式，返回结果
+				Cell retCell = firstRow.createCell(retCellCol);
+				String formula = columnFormulaMap.get(col);
+				
+				//判断是否属于固定字段
+				if(flagFields.indexOf(col) == -1)
+				{
+					formula = caculateRealFormula(formula,i*recordLines);
+				}
+				
+				//自己实现SUM
+				if(formula.startsWith("SUM("))
+				{
+					String val = caculateSum(formula, sheet);
+					data.put(col, val);
+				}else{
+					retCell.setCellType(CellType.FORMULA);
+					retCell.setCellFormula(formula);
+					Cell retDataCell = evaluator.evaluateInCell(retCell);
+					data.put(col, getCellValue(retDataCell));
+				}
+				
+			}
+			ret.add(data);
+		}
+		return ret;
+	}
+	
+	/**Yeb_zcbxqk
+	 * 测试从Excel中读取数组
+	 * @throws Exception 
+	 */
+	@Test
+	@SuppressWarnings("unchecked")
+	public void testReadArrayFromExcel() throws Exception
+	{
+//		String path = "D:\\config\\YEB_ZCBXQK_20161121.xls";
+//		String path = "D:\\config\\YEB_SYQXJGRB_20161121.xls";
+		String path = "D:\\config\\ZCDQQK_20161101.xls";
+		Class<AbstractExcelParseModel> classModel = (Class<AbstractExcelParseModel>) ClassLoader.getSystemClassLoader().loadClass("tk.codecube.test.poi.model.Yeb_zcbxqk");
+		AbstractExcelParseModel zcbxqk = classModel.newInstance();
+		Class<AbstractExcelParseModel> classModel2 = (Class<AbstractExcelParseModel>) ClassLoader.getSystemClassLoader().loadClass("tk.codecube.test.poi.model.Yeb_syqxjgrb");
+		AbstractExcelParseModel syqxjgrb = classModel2.newInstance();
+		Class<AbstractExcelParseModel> classModel3 = (Class<AbstractExcelParseModel>) ClassLoader.getSystemClassLoader().loadClass("tk.codecube.test.poi.model.Yeb_zcdqqk");
+		AbstractExcelParseModel zcdqqk = classModel3.newInstance();
+		
+		InputStream inp = new FileInputStream(path);
+//		List<Map<String,String>> records = readRecordsFromExcel(inp, zcbxqk.getColumnFormulaMap(),4+"", 1+"",0,"filedate");
+//		List<Map<String,String>> records = readRecordsFromExcel(inp, syqxjgrb.getColumnFormulaMap(), null, null);
+		List<Map<String,String>> records = readRecordsFromExcel(inp, zcdqqk.getColumnFormulaMap(), 4+"", 1+"",-1,"filedate");
+
+		System.out.println(records.size());
+		System.out.println(JSONArray.toJSONString(records));
+	}
+	
+	
+	/**
+	 * 计算最真实的公式
+	 * @param formula
+	 * @param offset
+	 * @return
+	 */
+	private String caculateRealFormula(String formula, int offset) {
+		if(offset == 0) 
+			return formula;
+		String ret = formula;
+		Pattern numPattern = Pattern.compile("(\\d+)");
+		Matcher numMatcher = numPattern.matcher(formula);
+		Map<String,String> sourceAnDestMap = new HashMap<String, String>();
+		while(numMatcher.find())
+		{
+			long sourNum = Long.parseLong(numMatcher.group());
+			long desNum = sourNum + offset;
+			sourceAnDestMap.put(""+sourNum, ""+desNum);
+		}
+		for(Map.Entry<String, String> entry : sourceAnDestMap.entrySet())
+		{
+			ret = ret.replaceAll(entry.getKey(), entry.getValue());
+		}
+		return ret;
+	}
+
+	@Test
+	public void testReg()
+	{
+		String formula = "SUM(A1:B1,C1,D3)";
+		caculateRealFormula(formula, 1);
+	}
+	
 	
 	/**
 	 * 求和
@@ -99,6 +225,7 @@ public class TestPOIMain {
 		
 		String realArea = formula.replaceAll("SUM\\((\\S+)\\)", "$1");
 		BigDecimal ret = new BigDecimal("0");
+		System.out.println(formula);
 		//各个区域
 		String[] array = realArea.split(",");
 		for(int i=0 ; i<array.length ; ++i)
@@ -109,7 +236,7 @@ public class TestPOIMain {
 			case 1://表示单个单元格
 				CellReference cr = new CellReference(array[i]);
 				String val = getCellValue(sheet.getRow(cr.getRow()).getCell(cr.getCol()));
-				ret.add(new BigDecimal(val));
+				ret = ret.add(new BigDecimal(val));
 				break;
 			case 2://表示一个区域
 				CellReference crStart = new CellReference(area[0]);
@@ -140,7 +267,7 @@ public class TestPOIMain {
 			}
 			
 		}
-		return ret.toPlainString();
+		return df.format(ret);
 	}
 
 	@SuppressWarnings("deprecation")
@@ -151,7 +278,7 @@ public class TestPOIMain {
 		 	case Cell.CELL_TYPE_BOOLEAN:
 		 		return cell.getBooleanCellValue()+"";
 	        case Cell.CELL_TYPE_NUMERIC:
-	        	return String.valueOf(cell.getNumericCellValue());
+	        	return df.format(new BigDecimal(cell.getNumericCellValue()));
 	        case Cell.CELL_TYPE_STRING:
 	        	return cell.getStringCellValue();
 	        case Cell.CELL_TYPE_BLANK:
@@ -165,45 +292,4 @@ public class TestPOIMain {
 		}
 	}
 	
-	/**
-	 * 返回 剩余期限结构日报表 字段和Excel数据的对应
-	 * @return
-	 */
-	private Map<String,String> getSyqxjgrbColumnFormulaMap()
-	{
-		Map<String,String> ret = new LinkedHashMap<String,String>();
-		//合计
-		ret.put("hj", "J3");
-		//活期存款
-		ret.put("hqck", "J4");
-		//同业存款
-		ret.put("tyck", "J5");
-		//同业存单
-//		ret.put("tycd", "SUMPRODUCT(E24*1,F24*1,G24*1,H24*1,I24*1)");
-		ret.put("tycd", "SUM(J14:J21)");
-		//逆回购
-		ret.put("nhg", "J22");
-		//债券
-		ret.put("zq", "J34");
-		//国债
-		ret.put("gz", "J24");
-		//央票
-		ret.put("yp", "J23");
-		//政府性金融债
-		ret.put("zfxjrz", "J26");
-		//地方政府债
-		ret.put("dfzfz", "J27");
-		//企业债
-		ret.put("qyz", "J28");
-		//公司债
-		ret.put("gsz", "J29");
-		//中期票据
-		ret.put("zqpj", "J30");
-		//短期融资券
-		ret.put("dqrzq", "J31");
-		//资产支持证券
-		ret.put("zczczq", "J32");
-		
-		return ret;
-	}
 }

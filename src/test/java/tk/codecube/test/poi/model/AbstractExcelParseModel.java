@@ -8,17 +8,17 @@ import java.util.Map;
  * @author jianlong.song
  *
  */
-public abstract class ExcelParseCommonModel {
+public abstract class AbstractExcelParseModel {
 
 	/**
 	 * 数据库中列和对应的Excel中的计算公式
 	 */
 	private Map<String,String> columnFormulaMap = new LinkedHashMap<String, String>();
 	
-	public abstract void init();
+	public abstract Map<String,String> assembelColumnFormulaMap();
 
-	public ExcelParseCommonModel() {
-		init();
+	public AbstractExcelParseModel() {
+		setColumnFormulaMap(assembelColumnFormulaMap());
 	}
 	
 	public Map<String, String> getColumnFormulaMap() {
