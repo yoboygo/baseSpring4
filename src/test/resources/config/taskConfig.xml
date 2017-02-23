@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<taskList>
+	<config>
+		<!-- ftprun认为每个路径上的文件都是全的，每个操作都能被正确执行，只输出log不做实际操作方便debug -->
+		<fakeExecute>false</fakeExecute>
+		<serverList>
+			<server name="yuebaoSFTP" type="sftp">
+				<host>192.168.1.101</host><port>22</port><username>root</username><password>111111</password>
+			</server>
+		</serverList>
+		<fileRoots>
+			<path name="localRoot01">D:\Alipay\ZX</path>
+			<path name="ftpRoot01">/</path>
+		</fileRoots>
+		<fileTools>
+			<path name="splitTool01">D:\Alipay\zxdx\AlipayFileSplit</path>
+			<path name="mergeTool01">D:\Alipay\zxdx\KingdomFileMerge</path>
+		</fileTools>
+		<idReplace><!-- 这里配置的内容一则用于展开，二则用于替换；规则是<>中间的值用#包围，则会被替换 -->
+			<!-- <HPP/>使用前一小时 -->
+			<!-- <HHH/>使用当前小时 -->
+			<!-- <HNN/>使用后一小时 -->
+			<!-- 上述三个值的下限是000，上限是023，定义在系统中不需要在这配置  -->
+			<!-- <YYYYMMDD/>当前日期 -->
+			<!-- <YYYYMMLL/>前一天日期 -->
+			<!-- <YYYYMMNN/>后一天日期 -->
+			<!-- 如果是用-分割，则前面的数为起始值，后面的为终止值 -->
+			<!-- 如果是用，分割，则按照，分割为数组 -->
+			<H10>000-009</H10><!-- 每小時10个文件 -->
+			<D09>000-008</D09><!-- 每天9个文件，从000到008 -->
+			<D15>009-023</D15><!-- 每天15个文件，从009到023 -->
+			<DDD>000-023</DDD><!-- 每天24个文件 -->
+			<NNN>000-039</NNN><!-- 节点文件，1000个，从000到999 -->
+		</idReplace>
+	</config>
+	<task taskName="testTask" runTime="09:00-24:00" intervalMode="d"
+		intervalTime="1" run="true" taskDelay="0">
+		<policy>
+			<domain>YEB</domain>
+			<weight>5</weight>
+			<flat>WINDOWS</flat>
+			<ipnr>10.1.5.172</ipnr>
+		</policy>
+		<stepOKFile>
+			D:/alipay/download/#YYYYMMDD#/test_#DDD#.ok
+		</stepOKFile>
+		<stepModel src="
+				%ftpRoot01%/alipay/upload/#YYYYMMDD#/#H10#/test_file_#YYYYMMDD#_#H10#_#NNN#.txt,															%ftpRoot01%/alipay2/upload/#YYYYMMDD#/#H10#/test_file2_#YYYYMMDD#_#H10#_#NNN#.txt,
+				%ftpRoot01%/alipay/upload/#YYYYMMDD#/#D15#/test_file_#YYYYMMDD#_#D15#_#NNN#.txt,
+				%ftpRoot01%/alipay/upload/#YYYYMMDD#/test/#H10#/test_file_#YYYYMMDD#_#H10#_#NNN#.txt
+		" wait="3">  
+			%localRoot01%/alipay/upload/#YYYYMMDD#/#H10#
+		</stepModel>
+	</task>
+	<task taskName="testPipeLine" runTime="09:00-24:00" intervalMode="d"
+		intervalTime="1" run="true" taskDelay="0">
+		<policy>
+			<domain>YEB</domain>
+			<weight>5</weight>
+			<flat>WINDOWS</flat>
+			<ipnr>10.1.5.172</ipnr>
+		</policy>
+		<pipeline pipeLineName="testPipeLine">
+			<queueConfig queueSize="8000"></queueConfig>
+			<StepNumberReader maxVal="50000" readerName="number">
+			</StepNumberReader>
+			<StepSysoutWriter writerName="sysout1">
+			</StepSysoutWriter>
+			<StepSysoutWriter writerName="sysout2">
+			</StepSysoutWriter>
+		</pipeline>
+	</task>
+</taskList>
