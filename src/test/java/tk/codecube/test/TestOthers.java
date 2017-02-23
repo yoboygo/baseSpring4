@@ -6,9 +6,12 @@
  */
 package tk.codecube.test;
 
+import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -28,6 +31,7 @@ import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
 
+import org.apache.commons.lang.StringUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -222,7 +226,7 @@ public class TestOthers {
 	 * @return
 	 * @throws Exception
 	 */
-	public String createJsonData(int itemCount, int s, ChronoField cf) throws Exception{
+	public String createJsonData(int itemCount, int s, ChronoField cf,String path) throws Exception{
 		
 		DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd hh:mm:ss");
 		LocalDateTime ldt = LocalDateTime.now();
@@ -237,6 +241,15 @@ public class TestOthers {
 				itemData.put("x", String.valueOf(x));
 				itemData.put("y", String.valueOf(rd.nextInt(999)));
 				itemData.put("s", String.valueOf(j));
+				
+				//为动态添加图例做准备
+				if(StringUtils.isNotBlank(path)){
+					List<String> itemName = readFileToList(path);
+					int index = j - 1;
+					itemData.put("name", itemName.get(index));
+//					itemData.put("value", j);//跟s字段相同
+				}
+				
 				ret.add(itemData);
 			}
 			switch(cf){
@@ -259,6 +272,23 @@ public class TestOthers {
 	}
 	
 	/**
+	 * 从文件中读取数据行，返回list
+	 * @throws IOException
+	 */
+	public List<String> readFileToList(String path) throws IOException{
+//		String path = "src/test/resources/data/datav.txt";
+		List<String> ret =  new ArrayList<String>();
+		
+		BufferedReader br = new BufferedReader(new FileReader(new File(path)));
+		while(br.ready()){
+			ret.add(br.readLine());
+		}
+		br.close();
+		return ret;
+	}
+	
+	
+	/**
 	 * 获取每年的数据
 	 * @param itemCount
 	 * @param s
@@ -266,7 +296,7 @@ public class TestOthers {
 	 * @throws Exception
 	 */
 	public String getYearData(int itemCount,int s) throws Exception{
-		return createJsonData(itemCount,s,ChronoField.YEAR);
+		return createJsonData(itemCount,s,ChronoField.YEAR,null);
 	}
 	/**
 	 * 获取每月的数据
@@ -276,7 +306,7 @@ public class TestOthers {
 	 * @throws Exception
 	 */
 	public String getMonthData(int itemCount,int s) throws Exception{
-		return createJsonData(itemCount,s,ChronoField.MONTH_OF_YEAR);
+		return createJsonData(itemCount,s,ChronoField.MONTH_OF_YEAR,null);
 	}
 	/**
 	 * 获取每天的数据
@@ -286,7 +316,8 @@ public class TestOthers {
 	 * @throws Exception
 	 */
 	public String getDayData(int itemCount,int s) throws Exception{
-		return createJsonData(itemCount,s,ChronoField.DAY_OF_YEAR);
+		String path = "src/test/resources/data/datav.txt";
+		return createJsonData(itemCount,s,ChronoField.DAY_OF_YEAR,path);
 	}
 	
 	/**
