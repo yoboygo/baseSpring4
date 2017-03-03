@@ -10,12 +10,12 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.lang.reflect.Proxy;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.DecimalFormat;
@@ -50,11 +50,9 @@ import org.xml.sax.SAXException;
 import junit.framework.Assert;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
-import sun.java2d.pipe.SpanShapeRenderer.Simple;
 import tk.codecube.test.aop.springcore.entry.IWaiter;
 import tk.codecube.test.aop.springcore.entry.impl.NaiveWaiter;
 import tk.codecube.test.aop.springcore.entry.impl.SimpleWaiter;
-import tk.codecube.test.invocation.LoggingInvocationHandler;
 
 /**
  * 除Spring之外的各种小的Case
@@ -283,17 +281,18 @@ public class TestOthers {
 	
 	/**
 	 * 从文件中读取数据行，返回list
+	 * @throws FileNotFoundException 
 	 * @throws IOException
 	 */
-	public List<String> readFileToList(String path) throws IOException{
+	public List<String> readFileToList(String path) throws FileNotFoundException, IOException{
 //		String path = "src/test/resources/data/datav.txt";
 		List<String> ret =  new ArrayList<String>();
 		
-		BufferedReader br = new BufferedReader(new FileReader(new File(path)));
-		while(br.ready()){
-			ret.add(br.readLine());
+		try(BufferedReader br = new BufferedReader(new FileReader(new File(path)))){
+		    while(br.ready()){
+	            ret.add(br.readLine());
+	        }
 		}
-		br.close();
 		return ret;
 	}
 	
@@ -449,20 +448,16 @@ public class TestOthers {
 	    
 	    //请求体并不能放到get中
 //	    System.out.println(doHttpGet(url + "?" + p3.toString()));
-	    System.out.println(httpClientPost(url,p3));
 	    //失败
 //	    System.out.println(doHttpPost(url,p3.toString()));
 	    
+	    JSONObject result = JSONObject.fromObject(httpClientPost(url,p3));
+	   
+	    System.out.println(result);
+	    JSONArray datas = result.getJSONObject("hits").getJSONArray("hits");
+	    
+	    System.out.println(datas);
 	}
 	
-	@Test
-	public void testInvocation(){
-	    String str = "Hello Word";
-	    LoggingInvocationHandler hanler = new LoggingInvocationHandler(str);
-	    ClassLoader cl = ClassLoader.getSystemClassLoader();
-	    Comparable<String> obj = (Comparable<String>) Proxy.newProxyInstance(cl, new Class[] {Comparable.class}, hanler);
-	    obj.compareTo("Good");
-	    obj.equals("Good");
-	}
 	
 }
