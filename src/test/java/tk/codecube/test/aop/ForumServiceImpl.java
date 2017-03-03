@@ -45,5 +45,8 @@ public class ForumServiceImpl implements ForumService{
 //		PerformanceMonitor.end();
 	}
 
+	public void invokeGetClass(){
+		System.out.println(getClass().getSimpleName());
+	}
 	
 }

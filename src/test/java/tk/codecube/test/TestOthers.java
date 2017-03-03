@@ -10,11 +10,14 @@ import java.io.BufferedReader;
 import java.io.DataInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.lang.reflect.Proxy;
 import java.net.URL;
+import java.net.URLConnection;
 import java.text.DecimalFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -24,27 +27,34 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
-
 import javax.xml.XMLConstants;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
-
 import org.apache.commons.lang.StringUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.junit.Test;
 import org.xml.sax.SAXException;
-
 import junit.framework.Assert;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+import sun.java2d.pipe.SpanShapeRenderer.Simple;
 import tk.codecube.test.aop.springcore.entry.IWaiter;
 import tk.codecube.test.aop.springcore.entry.impl.NaiveWaiter;
 import tk.codecube.test.aop.springcore.entry.impl.SimpleWaiter;
+import tk.codecube.test.invocation.LoggingInvocationHandler;
 
 /**
  * 除Spring之外的各种小的Case
@@ -327,13 +337,132 @@ public class TestOthers {
 	@Test
 	public void testCreateJsonData() throws Exception{
 		
-		String yearData = getYearData(5, 5);
-		String monthData = getMonthData(6, 5);
-		String dayData =  getDayData(15, 5);
+		String yearData = getYearData(5, 3);
+		String monthData = getMonthData(6, 3);
+		String dayData =  getDayData(15, 3);
 		
 		System.out.println(yearData);
 		System.out.println(monthData);
 		System.out.println(dayData);
+	}
+	
+	/**
+	 * 测试继承关系中的getClass()
+	 * 在父类中调用getClass()方法,返回的是子类
+	 */
+	@Test
+	public void testExtends(){
+		SubClass sc = new SubClass();
+		
+		sc.invokeGetClass();
+		sc.invokGetClassInSubClass();
+	}
+	
+	/**
+	 * 测试Java中发起HTTP请求
+	 * @throws IOException 
+	 */
+	public String doHttpPost(String _url,String param) throws IOException{
+	    //TODO 测试失败
+		URL url = new URL(_url);
+//		String action = "_search";
+		
+		URLConnection uc = url.openConnection();
+		uc.setRequestProperty("Content-Type",
+                  "application/x-www-form-urlencoded");
+		uc.setRequestProperty("accept", "*/*");
+		uc.setRequestProperty("connection", "Keep-Alive");
+		
+		uc.setDoOutput(true);
+		uc.setDoInput(true);
+		String result = "";
+		try(PrintWriter out = new PrintWriter(uc.getOutputStream());
+		        BufferedReader in = new BufferedReader(new InputStreamReader(uc.getInputStream()))){
+		  
+//		    uc.setDefaultRequestProperty(key, value);
+		    out.println(param);
+		    out.flush();
+		    String line;
+		    while((line = in.readLine()) != null){
+		        result += line;
+		    }
+		    
+		}
+		return result;
+	}
+	
+	/** 
+	 * 成功
+	 * HTTP GET 请求
+	 * @return
+	 * @throws IOException 
+	 */
+	public String doHttpGet(String _url) throws IOException{
+	    
+	    URL url = new URL(_url);
+	    String result = "";
+	    URLConnection uc = url.openConnection();
+	    try(BufferedReader in = new BufferedReader( new InputStreamReader(uc.getInputStream())) ){
+	        
+	        String line = "";
+	        while((line = in.readLine()) != null){
+	            result += line;
+	        }
+	    }
+	    
+	    return result;
+	}
+	
+	
+	/**
+	 * 测试成功
+	 * @param url
+	 * @param params
+	 * @return
+	 * @throws ClientProtocolException
+	 * @throws IOException
+	 */
+	public String httpClientPost(String url,JSONObject params) throws ClientProtocolException, IOException{
+	    
+	    HttpClientBuilder hb = HttpClientBuilder.create();
+	    CloseableHttpClient hc = hb.build();
+	    
+	    HttpPost hp = new HttpPost(url);
+	    HttpEntity entity = new StringEntity(params.toString(),"utf-8");
+	    hp.setEntity(entity);
+	    
+	    CloseableHttpResponse response = hc.execute(hp);
+	    HttpEntity he = response.getEntity();
+	    return EntityUtils.toString(he);
+	}
+	
+	
+	@Test
+	public void testDoPost() throws IOException{
+	    String url = "http://10.139.113.29:10592/_search";
+	    JSONObject p = new JSONObject();
+	    p.put("title", "交易");
+	    JSONObject p2 = new JSONObject();
+	    p2.put("match", p);
+	    JSONObject p3 = new JSONObject();
+	    p3.put("query", p2);
+	    
+	    //请求体并不能放到get中
+//	    System.out.println(doHttpGet(url + "?" + p3.toString()));
+	    System.out.println(httpClientPost(url,p3));
+	    //失败
+//	    System.out.println(doHttpPost(url,p3.toString()));
+	    
+	}
+	
+	@Test
+	public void testInvocation(){
+	    String str = "Hello Word";
+	    LoggingInvocationHandler hanler = new LoggingInvocationHandler(str);
+	    ClassLoader cl = ClassLoader.getSystemClassLoader();
+	    Comparable<String> obj = (Comparable<String>) Proxy.newProxyInstance(cl, new Class[] {Comparable.class}, hanler);
+	    obj.compareTo("Good");
+	    obj.equals("Good");
 	}
 	
 }

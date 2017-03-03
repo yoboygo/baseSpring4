@@ -21,6 +21,9 @@
 		<commons.codec.version>1.9</commons.codec.version>
 		<quartz.version>2.2.1</quartz.version>
 		<poi.version>3.15</poi.version>
+		<jxl.version>2.6.12</jxl.version>
+		<servlet-api.version>3.1.0</servlet-api.version>
+		<httpClient.version>4.5.3</httpClient.version>
 	</properties>
 	
 	<dependencies>
@@ -227,9 +230,22 @@
 		<dependency>
 		    <groupId>net.sourceforge.jexcelapi</groupId>
 		    <artifactId>jxl</artifactId>
-		    <version>2.6.12</version>
+		    <version>${jxl.version}</version>
 		</dependency>
-						
+		<!-- https://mvnrepository.com/artifact/javax.servlet/javax.servlet-api -->
+		<dependency>
+		    <groupId>javax.servlet</groupId>
+		    <artifactId>javax.servlet-api</artifactId>
+		    <version>${servlet-api.version}</version>
+		    <scope>provide</scope>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+		<dependency>
+		    <groupId>org.apache.httpcomponents</groupId>
+		    <artifactId>httpclient</artifactId>
+		    <version>${httpClient.version}</version>
+		</dependency>
+										
 	</dependencies>
   
   
