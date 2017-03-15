@@ -459,5 +459,24 @@ public class TestOthers {
 	    System.out.println(datas);
 	}
 	
-	
+	/**
+	 * 测试Elasticsearch
+	 * @throws IOException 
+	 * @throws FileNotFoundException 
+	 */
+	@Test
+	public void testElasticsearch() throws FileNotFoundException, IOException{
+	    String logDatasPaht = "";
+	    String logDatasStr = "";
+	    try(BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(logDatasPaht)))){
+	        while(br.ready()){
+	            logDatasStr += br.readLine();
+	        }
+	    }
+	    List<String> logDatas = Elasticsearch.parseElasticaserchLogNoJson(logDatasStr);
+//	    List<String> logDatas = Elasticsearch.parseElasticaserchLog(logDatasStr);
+	    
+	    Elasticsearch.parseLogStr(logDatas);
+	   
+	}
 }
