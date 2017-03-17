@@ -53,6 +53,7 @@ import net.sf.json.JSONObject;
 import tk.codecube.test.aop.springcore.entry.IWaiter;
 import tk.codecube.test.aop.springcore.entry.impl.NaiveWaiter;
 import tk.codecube.test.aop.springcore.entry.impl.SimpleWaiter;
+import tk.codecube.test.elasticsearch.Elasticsearch;
 
 /**
  * 除Spring之外的各种小的Case
@@ -466,7 +467,7 @@ public class TestOthers {
 	 */
 	@Test
 	public void testElasticsearch() throws FileNotFoundException, IOException{
-	    String logDatasPaht = "";
+	    String logDatasPaht = "C:\\Users\\songjl\\Desktop\\config\\logdatas.txt";
 	    String logDatasStr = "";
 	    try(BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(logDatasPaht)))){
 	        while(br.ready()){

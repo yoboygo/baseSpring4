@@ -7,9 +7,7 @@
 package tk.codecube.test.lookupandreplace;
 
 import java.lang.reflect.Method;
-
 import org.springframework.beans.factory.support.MethodReplacer;
-
 import tk.codecube.test.custombeanlifecycle.Car;
 
 /**
