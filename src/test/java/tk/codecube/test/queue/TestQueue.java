@@ -66,6 +66,7 @@ public class TestQueue {
                 }else{
                     System.out.print("-Queue 中数据大于 1 size = " + queue.size());
                     while(queue.size() > 1){
+                        //丢弃过时数据，只保留最新的一条
                         queue.remove();
                     }
                     data = queue.peek();

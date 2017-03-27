@@ -65,8 +65,8 @@ public class Elasticsearch {
      */
     public static JSONArray parseLogStr(List<String> logData) {
 
-        Pattern contentPattern = Pattern.compile("\\{.*\\}");
-        Pattern datePattern = Pattern.compile("\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2}");
+        Pattern contentPattern = Pattern.compile("(\\{.*\\})");
+        Pattern datePattern = Pattern.compile("(\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}:\\d{2})");
         JSONArray result = new JSONArray();
         for(String log : logData){
             JSONObject data = new JSONObject();
@@ -74,10 +74,10 @@ public class Elasticsearch {
             Matcher dateMatcher = datePattern.matcher(log);
             
             if(contentMatcher.find()){
-                data = JSONObject.fromObject(contentMatcher.group());
+                data = JSONObject.fromObject(contentMatcher.group(1));
             }
             if(dateMatcher.find()){
-                data.put("logtime", dateMatcher.group());
+                data.put("logtime", dateMatcher.group(1));
             }
             result.add(data);
         }

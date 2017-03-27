@@ -26,3 +26,20 @@ public class TreadInfoQueue {
     }
     
 }
+
+class OverrideQueue<E> extends ArrayBlockingQueue<E>{
+
+    private int capacity;
+    private int count;
+    
+    public OverrideQueue(int capacity) {
+        super(capacity);
+        this.capacity = capacity;
+    }
+    
+    @Override
+    public boolean offer(E e) {
+        
+        return super.offer(e);
+    }
+}
