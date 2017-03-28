@@ -19,14 +19,19 @@ import java.io.PrintWriter;
 import java.net.URL;
 import java.net.URLConnection;
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.TimeZone;
 import javax.xml.XMLConstants;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
@@ -41,6 +46,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.apache.log4j.helpers.ISO8601DateFormat;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -480,4 +486,35 @@ public class TestOthers {
 	    Elasticsearch.parseLogStr(logDatas);
 	   
 	}
+	
+	/**
+	 * Java8 可以直接使用Instant
+	 * @throws ParseException 
+	 * @Dec 测试ISO8601日期格式
+	 * 2017年3月27日 下午5:12:44 songjl
+	 */
+	@Test
+	public void testISO8601Format() throws ParseException{
+	    
+	    SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSS'Z'");
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+	    
+        Date d = iso8601Format.parse("2017-03-07T09:55:53.789Z");
+        
+        Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+00:00"));
+        System.out.println(sdf.format(d));
+        System.out.println(TimeZone.getDefault());
+        System.out.println(iso8601Format.format(cal.getTime()));
+        cal.add(Calendar.MINUTE, -2);   //往后倒2分钟
+        System.out.println(sdf.format(cal.getTime()));
+	    
+	    
+	    /* java8 实现
+	    Instant it = Instant.now();
+	    SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd hh:mm:ss");
+	    System.out.println(it.toString());
+	    System.out.println(it.parse("2017-03-07T09:55:53.789Z").toString());
+	     */
+	}
+	
 }

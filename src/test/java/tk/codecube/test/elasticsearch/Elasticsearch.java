@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -19,6 +20,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import org.apache.log4j.helpers.ISO8601DateFormat;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import net.sf.json.JsonConfig;
@@ -197,6 +199,19 @@ public class Elasticsearch {
         }
        
         return result.toString();
+    }
+    
+    /**
+     * @Dec 将UTC格式的日期转成ISO8601
+     * @param utc
+     * @return
+     * 2017年3月27日 下午4:56:16 songjl
+     */
+    public static String convertToIso8601(String utc){
+//        String iso8601 = "2017-03-07T09:55:53.789Z";
+        ISO8601DateFormat idf = new ISO8601DateFormat();
+        idf.format(Calendar.getInstance());
+        return null;
     }
 }
 
