@@ -4,18 +4,18 @@ import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
-public class TreadInfoQueue {
+public class TradeInfoQueue {
     
     private static Queue<Map<String,String>> queue;
     
-    private TreadInfoQueue(){
+    private TradeInfoQueue(){
         
     }
     
     public static Queue<Map<String,String>> instance(){
         if(queue == null){
             
-            synchronized (TreadInfoQueue.class) {
+            synchronized (TradeInfoQueue.class) {
                 if(queue == null){
 //                    queue = new LinkedBlockingQueue<Map<String,String>>();
                     queue = new ArrayBlockingQueue<Map<String,String>>(10);

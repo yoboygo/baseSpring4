@@ -21,7 +21,7 @@ public class TestQueue {
         //每秒写一个
         Thread addTreadInfo = new Thread(() -> {
             
-            Queue<Map<String,String>> queue = TreadInfoQueue.instance();
+            Queue<Map<String,String>> queue = TradeInfoQueue.instance();
             while(true){
                 Map<String,String> data = new HashMap<String,String>();
 //                data.put(Thread.currentThread().getName(),dtf.format(LocalDateTime.now()));
@@ -46,7 +46,7 @@ public class TestQueue {
         //没2秒读一次 只读最新的
         Thread getTreadInfo = new Thread(() -> {
             
-            Queue<Map<String,String>> queue = TreadInfoQueue.instance();
+            Queue<Map<String,String>> queue = TradeInfoQueue.instance();
             while(true){
                 
                 try {
