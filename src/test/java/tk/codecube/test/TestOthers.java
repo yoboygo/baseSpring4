@@ -46,7 +46,6 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
-import org.apache.log4j.helpers.ISO8601DateFormat;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -59,6 +58,7 @@ import net.sf.json.JSONObject;
 import tk.codecube.test.aop.springcore.entry.IWaiter;
 import tk.codecube.test.aop.springcore.entry.impl.NaiveWaiter;
 import tk.codecube.test.aop.springcore.entry.impl.SimpleWaiter;
+import tk.codecube.test.elasticsearch.CycleArrayList;
 import tk.codecube.test.elasticsearch.Elasticsearch;
 
 /**
@@ -517,4 +517,44 @@ public class TestOthers {
 	     */
 	}
 	
+	/**
+	 * @Dec测试循环列表
+	 * 2017年4月7日 下午1:18:29 songjl
+	 */
+	@Test
+	public void testCycleList(){
+	    CycleArrayList<Integer> cal =  new CycleArrayList<Integer>(3);
+	    int i = 0;
+	    while( i < 3 ){
+	        cal.add(i++);
+	    }
+	    i = 0;
+	    while( i < 3)
+	    {
+	        int index = i++;
+	        System.out.print(index + "-" +cal.get(index) + ",");
+	    }
+	    cal.add(50);
+	    System.out.println("");
+	    i = 0;
+        while( i < 3)
+        {
+            int index = i++;
+            System.out.print(index + "-" +cal.get(index) + ",");
+        }
+	}
+	
+	/**
+	 * 失败
+	 * @Dec
+	 * 2017年4月11日 上午10:25:41 songjl
+	 */
+	@Test
+	public void testJSONArray(){
+	    String data = "[thuserid=20140101000000007400000804,businessCode=022,applicationAmount=1000.00,applicationVol=<null>,source=001,operDate=20170308,operTime=081359]";
+	    
+	    JSONArray dataJSON = JSONArray.fromObject(data);
+	    System.out.println(dataJSON.toString());
+	    
+	}
 }

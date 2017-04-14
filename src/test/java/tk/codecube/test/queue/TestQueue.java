@@ -28,13 +28,14 @@ public class TestQueue {
                 data.put(Thread.currentThread().getName(),LocalDateTime.now() + "");
 //                boolean success = queue.offer(data,Integer.MAX_VALUE,TimeUnit.SECONDS);
                 //超出Queue容量，弹出顶部丢弃
-                while(!queue.offer(data)){
-                    System.out.println("-丢弃数据" + queue.remove());
-                }
+//                while(!queue.offer(data)){
+//                    System.out.println("-丢弃数据" + queue.remove());
+//                }
+                queue.add(data);
                 System.out.println("写入数据..." + data.toString());
                 
                 try {
-                    Thread.sleep(100);
+                    Thread.sleep(500);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -43,14 +44,14 @@ public class TestQueue {
         });
         
         // Map<String,String> data = queue.
-        //没2秒读一次 只读最新的
+        //每2秒读一次 只读最新的
         Thread getTreadInfo = new Thread(() -> {
             
             Queue<Map<String,String>> queue = TradeInfoQueue.instance();
             while(true){
                 
                 try {
-                    Thread.currentThread().sleep(2000);
+                    Thread.currentThread().sleep(20000);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
