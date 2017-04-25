@@ -45,6 +45,7 @@ public class VankeLogin {
     
     private static final String tokenRegx = "\"__RequestVerificationToken\".*value=\"(\\S+)\"";
     private static final String loginUrl = "http://fang.vanke.com/Login";
+    private static final String moveToUrl = "http://fang.vanke.com/login/index";
     private static final String validataUrl = "http://fang.vanke.com/Login/GetValidateCode";
     private static final String selectUrl = "http://fang.vanke.com/ActivityTarget/Floor/30764?activityid=6769";
     
@@ -114,12 +115,13 @@ public class VankeLogin {
         params.put("Telphone", this.getUserName());
         params.put("Encrypted_pwd", encrypt(this.getPassWord()));
         params.put("VerificationCode", this.getValidataCode());
-        params.put("__RequestVerificationToken", this.getRequestToken());
+        params.put("__RequestVerificationToken...", this.getRequestToken());
         
         //开始登陆
         CloseableHttpResponse loginResponse = doPost(loginUrl, params);
+        CloseableHttpResponse moveToResponse = doGet(moveToUrl, new HashMap<String,String>());
         
-        System.out.println(EntityUtils.toString(loginResponse.getEntity()));
+        System.out.println(EntityUtils.toString(moveToResponse.getEntity()));
     }
     
     /**
