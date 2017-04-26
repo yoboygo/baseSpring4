@@ -3,17 +3,17 @@ package tk.codecube.test.queue;
 import java.util.Map;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class TradeInfoCycleArray<E> {
+public class TradeInfoCycleArray{
     
     private static CycleArray<Map<String,String>> datas;
-    private TradeInfoCycleArray() {};
     private static ReentrantLock lock = new ReentrantLock();
     
-    public static CycleArray<Map<String,String>> getInstance(int size){
+    private TradeInfoCycleArray() {};
+    public static CycleArray<Map<String,String>> getInstance(){
         lock.lock();
         try{
             if(datas == null){
-                datas = new CycleArray<Map<String,String>>(size);
+                datas = new CycleArray<Map<String,String>>(10);
             }
             
             return datas;

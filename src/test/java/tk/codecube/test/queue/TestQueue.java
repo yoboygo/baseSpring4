@@ -1,7 +1,9 @@
 package tk.codecube.test.queue;
 
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Queue;
@@ -103,7 +105,59 @@ public class TestQueue {
         }
     }
     
-    public void testBlockCycleArray(){
+    /**
+     * @Dec 测试阻塞的循环数组
+     * @throws InterruptedException
+     * songjl 2017年4月26日 下午3:47:27
+     */
+    @Test
+    public void testBlockCycleArray() throws InterruptedException{
         
+        //写线程
+        Thread writeThread = new Thread(() -> {
+
+            while(true){
+                
+                Map<String,String> data = new HashMap<String,String>();
+                String value = LocalTime.now().toString();
+                data.put("write", value);
+                TradeInfoCycleArray.getInstance().add(data);
+                System.out.println("写入数据：" + value);
+                try {
+                    Thread.sleep(1000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+            
+        });
+        
+        //读线程
+        Thread readThread = new Thread(() -> {
+            
+            while(true){
+                
+                System.out.println("=========开始读取数据===========");
+                CycleArray<Map<String,String>> datas = TradeInfoCycleArray.getInstance();
+                int size = datas.getSize();
+                for(int i = 0; i < size ; ++i){
+                    System.out.println( i + ":" + datas.get(i) );
+                }
+                System.out.println("=========结束读取数据===========");
+                
+                try {
+                    Thread.sleep(5000);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        
+        writeThread.start();
+        readThread.start();
+        
+        Thread.sleep(100000);
+        writeThread.stop();
+        readThread.stop();
     }
 }

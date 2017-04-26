@@ -8,7 +8,7 @@ import java.util.concurrent.locks.ReentrantLock;
  *
  * @param <E>
  */
-public class CycleArray<E>  {
+public class CycleArray<E> {
    
     private Object[] datas;
     private int offset = -1;
@@ -75,5 +75,15 @@ public class CycleArray<E>  {
         this.full = full;
     }
 
-    
+    public int getSize(){
+        return this.datas.length;
+    }
+    public int getCapacity(){
+        if(isFull()){
+            return getSize();
+        }else{
+            return this.offset + 1;
+        }
+    }
+
 }
