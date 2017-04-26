@@ -86,4 +86,24 @@ public class TestQueue {
         getTreadInfo.stop();
     }
     
+    
+    /**
+     * 测试循环列表
+     */
+    @Test
+    public void testCycleArray(){
+        CycleArray<Integer> cl = new CycleArray<Integer>(10);
+        int i; 
+        for(i = 0 ; i < 8 ; ++i){
+            cl.add(i);
+        }
+        
+        for(i = 0; i < 10 ; ++i){
+            System.out.println(i + ":" + cl.get(i));
+        }
+    }
+    
+    public void testBlockCycleArray(){
+        
+    }
 }
