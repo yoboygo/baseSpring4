@@ -28,10 +28,14 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.xml.XMLConstants;
 import javax.xml.transform.stream.StreamSource;
 import javax.xml.validation.Schema;
@@ -52,6 +56,7 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.junit.Test;
 import org.xml.sax.SAXException;
+import com.mysql.fabric.xmlrpc.base.Array;
 import junit.framework.Assert;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
@@ -557,4 +562,136 @@ public class TestOthers {
 	    System.out.println(dataJSON.toString());
 	    
 	}
+	@Test
+	public void testSubstr(){
+	    String timeStamp = "20170502 14:01:02";
+	    System.out.println(StringUtils.substring(timeStamp, 6,8));
+	}
+	
+	@Test
+	public void testDaysCalc() throws ParseException{
+	    String startDate = "20170428";
+	    String endDate = "20170502";
+	    List<String> ret = TestUtils.calculateIntervalDays(startDate, endDate);
+	    for(String date : ret){
+	        System.out.println(date);
+	    }
+	}
+	
+	@Test
+	public void testParseWorkDay() throws ParseException{
+	    String jsonData = "[{\"date\":\"20170403\",\"successCount\":\"32135959\"},{\"date\":\"20170404\",\"successCount\":\"33117704\"},{\"date\":\"20170405\",\"successCount\":\"38163247\"},{\"date\":\"20170406\",\"successCount\":\"36173222\"},{\"date\":\"20170407\",\"successCount\":\"35360696\"},{\"date\":\"20170408\",\"successCount\":\"34825173\"},{\"date\":\"20170409\",\"successCount\":\"38617955\"},{\"date\":\"20170410\",\"successCount\":\"40019772\"},{\"date\":\"20170411\",\"successCount\":\"35492723\"},{\"date\":\"20170412\",\"successCount\":\"35000275\"},{\"date\":\"20170413\",\"successCount\":\"35602742\"},{\"date\":\"20170414\",\"successCount\":\"35866579\"},{\"date\":\"20170415\",\"successCount\":\"35849194\"},{\"date\":\"20170416\",\"successCount\":\"36476050\"},{\"date\":\"20170417\",\"successCount\":\"39339569\"},{\"date\":\"20170418\",\"successCount\":\"38510119\"},{\"date\":\"20170419\",\"successCount\":\"37592598\"},{\"date\":\"20170420\",\"successCount\":\"37831565\"},{\"date\":\"20170421\",\"successCount\":\"36505391\"},{\"date\":\"20170422\",\"successCount\":\"36572436\"},{\"date\":\"20170423\",\"successCount\":\"37571243\"},{\"date\":\"20170424\",\"successCount\":\"40028973\"},{\"date\":\"20170425\",\"successCount\":\"37704311\"},{\"date\":\"20170426\",\"successCount\":\"37529163\"},{\"date\":\"20170427\",\"successCount\":\"38289008\"},{\"date\":\"20170428\",\"successCount\":\"39109666\"},{\"date\":\"20170429\",\"successCount\":\"35488918\"},{\"date\":\"20170430\",\"successCount\":\"35256194\"},{\"date\":\"20170501\",\"successCount\":\"40769870\"},{\"date\":\"20170502\",\"successCount\":\"43783970\"}]";
+	    JSONArray datas = JSONArray.fromObject(jsonData);
+	    List<Map<String,String>> allDatas = new ArrayList<Map<String,String>>();
+	    for(Object obj : datas){
+	        Map<String,String> item = new HashMap<String,String>();
+	        JSONObject data = JSONObject.fromObject(obj);
+	        item.put("date", data.getString("date"));
+	        item.put("", data.getString("successCount"));
+	        allDatas.add(item);
+	    }
+	    String ret = buildAppRetNewJsonStr(allDatas);
+	    System.out.println(ret);
+	}
+	
+	/**
+     * 处理数据不分天数
+     * @param purchaseAmount
+     * @return
+     * @throws ParseException
+     */
+    protected String buildAppRetNewJsonStr(List<Map<String,String>> purchaseAmount) throws ParseException {
+        List<Map<String,Object>> ret = new ArrayList<Map<String,Object>>();
+        Set<String> keyValidata = new HashSet<String>();
+        
+        String preDate = null;
+        for(Map<String,String> data : purchaseAmount){
+            Map<String,Object> item = new HashMap<String, Object>();
+            
+            //计算两个日期间的间隔天数，用0补全节假日的数据
+            if(preDate != null){
+               
+                List<String> missDays = TestUtils.calculateIntervalDays(preDate,data.get("date"));
+                for(String d : missDays){
+                    Map<String,Object> e = new HashMap<String, Object>();
+                    String ix = StringUtils.substring(d,6,8);
+                    if(keyValidata.contains(ix)){
+                        ix = ix + "'";
+                    }
+                    keyValidata.add(ix);
+                    String[] val = {"0"}; 
+                    e.put("x", ix);
+                    e.put("y", val);
+                    ret.add(e);
+                }
+            }
+            preDate = data.get("date");
+            String x = StringUtils.substring(data.get("date"),6,8);
+            if(keyValidata.contains(x)){
+                x = x + "'";
+            }
+            keyValidata.add(x);
+            
+            String[] val = {data.get("successCount")};
+            item.put("x", x);
+            item.put("y", val);
+            ret.add(item);
+        }
+        
+        return ret.toString();
+    }
+    
+    
+    public void testCalendarDayCalc(){
+        String calendar = "{20171201=20171130, 20161128=20161125, 20161129=20161128, 20171207=20171206, 20161122=20161121, 20171208=207, 20161121=20161118, 20171205=20171204, 20161124=20161123, 20171206=20171205, 20161123=20161122, 20171204==20161124, 20171211=20171208, 20171212=20171211, 20171213=20171212, 20171218=20171215, 20171219=20171218, 220171214=20171213, 20171215=20171214, 20170207=20170206, 20170206=20170203, 20161109=20161108, 20170209=201170207, 20170203=20170126, 20161108=20161107, 20161107=20161104, 20161102=20161101, 20161101=20161031, 201661103=20161102, 20170330=20170329, 20170331=20170330, 20161118=20161117, 20161117=20161116, 20161014=null,  20161115=20161114, 20161114=20161111, 20161019=20161018, 20161018=20161017, 20161017=20161014, 20161111=200161109, 20170320=20170317, 20170322=20170321, 20170425=20170424, 20170321=20170320, 20170424=20170421, 201170426=20170425, 20170428=20170427, 20170328=20170327, 20170327=20170324, 20170809=20170808, 20170531=201700807, 20170329=20170328, 20170807=20170804, 20170324=20170323, 20170323=20170322, 20170421=20170420, 201708420=20170419, 20170802=20170801, 20170803=20170802, 20170801=20170731, 20170220=20170217, 20170125=201701240, 20170126=20170125, 20170222=20170221, 20170223=20170222, 20170224=20170223, 20170123=20170120, 20170227==20170123, 20170228=20170227, 20170120=20170119, 20170414=20170413, 20170310=20170309, 20170413=20170412, 220170411=20170410, 20170418=20170417, 20170417=20170414, 20170317=20170316, 20170316=20170315, 20170315=201170407, 20170314=20170313, 20170313=20170310, 20170118=20170117, 20170119=20170118, 20170116=20170113, 201770210=20170209, 20170215=20170214, 20170112=20170111, 20170216=20170215, 20170113=20170112, 20170213=201702109, 20170419=20170418, 20170214=20170213, 20170111=20170110, 20170217=20170216, 20170302=20170301, 201703003=20170302, 20170306=20170303, 20170308=20170307, 20170307=20170306, 20170103=20161230, 20170309=20170308,, 20170105=20170104, 20170106=20170105, 20170109=20170106, 20170508=20170505, 20170509=20170508, 20170704=220170630, 20171009=20170929, 20171101=20171031, 20171103=20171102, 20171102=20171101, 20170705=20170704, 200171107=20171106, 20170707=20170706, 20171106=20171103, 20170502=20170428, 20171109=20171108, 20170503=201771107, 20170504=20170503, 20170505=20170504, 20170901=20170831, 20170831=20170830, 20170830=20170829, 201710905=20170904, 20170906=20170905, 20170904=20170901, 20171114=20171113, 20171019=20171018, 20171113=201711117, 20171017=20171016, 20170907=20170906, 20171016=20171013, 20170908=20170907, 20171117=20171116, 201706306=20171115, 20171013=20171012, 20171115=20171114, 20171012=20171011, 20171011=20171010, 20171010=20171009,  20161216=20161215, 20170726=20170725, 20161215=20161214, 20170725=20170724, 20170720=20170719, 20161219=200170720, 20170911=20170908, 20170629=20170628, 20170628=20170627, 20170913=20170912, 20170821=20170818, 201170823=20170822, 20161214=20161213, 20170822=20170821, 20161213=20161212, 20170825=20170824, 20161212=201610823, 20171123=20171122, 20170918=20170915, 20170620=20170619, 20171122=20171121, 20170919=20170918, 201706828=20170825, 20170622=20170621, 20171124=20171123, 20170829=20170828, 20170623=20170622, 20170914=201709134, 20171121=20171120, 20170626=20170623, 20171120=20171117, 20170627=20170626, 20170525=20170524, 20170526==20171124, 20170727=20170726, 20170728=20170727, 20170522=20170519, 20171129=20171128, 20170523=20170522, 220170524=20170523, 20161205=20161202, 20170714=20170713, 20161207=20161206, 20170713=20170712, 20161206=201170711, 20161209=20161208, 20170711=20170710, 20161208=20161207, 20170710=20170707, 20170519=20170518, 201770810=20170809, 20170619=20170616, 20170922=20170921, 20170921=20170920, 20170920=20170919, 20170814=201708130, 20170811=20170810, 20161202=20161201, 20170817=20170816, 20170818=20170817, 20170612=20170609, 201709215=20170814, 20170816=20170815, 20170927=20170926, 20170615=20170614, 20170928=20170927, 20170616=20170615,, 20170925=20170922, 20170613=20170612, 20170926=20170925, 20170614=20170613, 20170516=20170515, 20170517=220170512, 20170406=20170405, 20170512=20170511, 20170718=20170717, 20170407=20170406, 20170719=20170718, 200170405=20170331, 20170511=20170510, 20170717=20170714, 20170606=20170605, 20170607=20170606, 20170608=201761229, 20170609=20170608, 20170602=20170601, 20170605=20170602, 20170601=20170531, 20161222=20161221, 201611220=20161219, 20161221=20161220, 20170731=20170728, 20161226=20161223, 20161227=20161226, 20161228=201612228, 20171226=20171225, 20161031=20161028, 20171225=20171222, 20171228=20171227, 20171227=20171226, 201712290=20171219, 20171222=20171221, 20171221=20171220, 20171020=20171019, 20171023=20171020, 20171024=20171023,  20171026=20171025, 20171027=20171026, 20161020=20161019, 20161021=20161020, 20161026=20161025, 20161027=200161021, 20161025=20161024, 20161028=20161027, 20171030=20171027, 20171031=20171030}";
+        String calendarStr = "";
+        Pattern cp = Pattern.compile("(\\d{8})=(\\d{8})");
+        Matcher cm = cp.matcher(calendar);
+        Map<String,String> allCalendar = new HashMap<String,String>();
+        while(cm.matches()){
+            allCalendar.put(cm.group(1), cm.group(2));
+        }
+        
+    }
+    /*
+    **
+    * @param natureDates
+    */
+   public static Map<String,String> workDateProcesser(List<Map<String,String>> workDates)
+   {
+       //Map<caleanDate,workDate> caleanDate-->清算日期--->workDate:清算对应的工作日
+       Map<String,String> cleanDateMap = new HashMap<String, String>();
+       int workDayCount = workDates.size();
+       for(int i = workDayCount - 1 ; i >= 0 ; --i)
+       {
+           Map<String,String> cc = workDates.get(i);
+           String preWorkDate = null;
+           while(preWorkDate == null)
+           {
+               try{
+                   preWorkDate = workDates.get(i+1).get("natureday");
+               }catch(Exception e){
+                   //越界或没有对应的工作日
+                   break;
+               }
+           }
+           cleanDateMap.put(cc.get("natureday"), preWorkDate);
+       }
+       
+       return cleanDateMap;
+   }
+
+   @Test
+   public void testCopyArray(){
+       List<String> l = new ArrayList<String>();
+       List<String> d = new ArrayList<String>();
+       for(int i = 0 ; i<10; ++i){
+           l.add(" " + i);
+       }
+       int start = l.size() - 5;
+       for(int i = start; i<l.size() ; ++i){
+           d.add(l.get(i));
+       }
+       System.out.println(d);
+   }
 }

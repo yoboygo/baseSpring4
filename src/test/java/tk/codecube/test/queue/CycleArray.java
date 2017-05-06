@@ -75,12 +75,12 @@ public class CycleArray<E> {
         this.full = full;
     }
 
-    public int getSize(){
+    public int capacity(){
         return this.datas.length;
     }
-    public int getCapacity(){
+    public int size(){
         if(isFull()){
-            return getSize();
+            return size();
         }else{
             return this.offset + 1;
         }

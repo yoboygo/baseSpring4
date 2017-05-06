@@ -37,15 +37,16 @@ import org.apache.http.util.EntityUtils;
  */
 public class VankeLogin {
     
-    private String userName = "";
-    private String passWord = "";
+    private String userName = "15620608044";
+    private String passWord = "aqp123456";
     private String validataCode = "";
     private String requestToken = "";
     private CloseableHttpClient httpClient;
     
     private static final String tokenRegx = "\"__RequestVerificationToken\".*value=\"(\\S+)\"";
-    private static final String loginUrl = "http://fang.vanke.com/Login";
-    private static final String moveToUrl = "http://fang.vanke.com/login/index";
+    private static final String loginUrl = "http://fang.vanke.com/Login?ReturnUrl=%2F";
+    private static final String moveToUrl = "http://fang.vanke.com";
+    
     private static final String validataUrl = "http://fang.vanke.com/Login/GetValidateCode";
     private static final String selectUrl = "http://fang.vanke.com/ActivityTarget/Floor/30764?activityid=6769";
     
@@ -64,10 +65,10 @@ public class VankeLogin {
         
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in, "UTF-8"));
         
-        System.out.println("请输入用户名：");
-        vl.setUserName(br.readLine());
-        System.out.println("请输入密码：");
-        vl.setPassWord(br.readLine());
+//        System.out.println("请输入用户名：");
+//        vl.setUserName(br.readLine());
+//        System.out.println("请输入密码：");
+//        vl.setPassWord(br.readLine());
 
         //登陆之前获取token
         CloseableHttpResponse beforeLoginResponse = vl.doGet(loginUrl, new HashMap<String,String>());
@@ -86,9 +87,9 @@ public class VankeLogin {
             String validataCodePath = "D:\\data\\vanke\\validata.jpg";
             vl.getValidataCode(validataUrl, validataCodePath);
             Runtime.getRuntime().exec("rundll32 c:\\Windows\\System32\\shimgvw.dll,ImageView_Fullscreen " + validataCodePath);
-            System.out.println("请输入验证码(输入!f刷新验证码)：");
+            System.out.println("请输入验证码(输入!刷新验证码)：");
             String input = br.readLine();
-            if("!f".equals(input) && !StringUtils.isBlank(input)){
+            if("!".equals(input) && !StringUtils.isBlank(input)){
                 continue;
             }
             vl.setValidataCode(input);
@@ -97,10 +98,11 @@ public class VankeLogin {
         
         System.out.println("您输入的信息为：" + vl.getUserName() + " : " + vl.getPassWord());
         vl.login();
-        
+//        Thread.sleep(10 * 1000);
         //期望列表
-        CloseableHttpResponse whishListResponse = vl.doGet(wishListUrl, new HashMap<String,String>());
-        System.out.println(EntityUtils.toString(whishListResponse.getEntity()));
+//        CloseableHttpResponse whishListResponse = vl.doGet(wishListUrl, new HashMap<String,String>());
+//        System.out.println(EntityUtils.toString(whishListResponse.getEntity()));
+        
     }
     
     /**
@@ -111,17 +113,17 @@ public class VankeLogin {
      */
     public void login() throws Exception{
         
-        Map<String,String> params = new HashMap<>();
+        Map<String,String> params = new HashMap<String,String>();
         params.put("Telphone", this.getUserName());
         params.put("Encrypted_pwd", encrypt(this.getPassWord()));
         params.put("VerificationCode", this.getValidataCode());
-        params.put("__RequestVerificationToken...", this.getRequestToken());
+        params.put("__RequestVerificationToken", this.getRequestToken());
         
         //开始登陆
         CloseableHttpResponse loginResponse = doPost(loginUrl, params);
         CloseableHttpResponse moveToResponse = doGet(moveToUrl, new HashMap<String,String>());
         
-        System.out.println(EntityUtils.toString(moveToResponse.getEntity()));
+        System.out.println(EntityUtils.toString(loginResponse.getEntity()));
     }
     
     /**

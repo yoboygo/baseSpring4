@@ -139,7 +139,7 @@ public class TestQueue {
                 
                 System.out.println("=========开始读取数据===========");
                 CycleArray<Map<String,String>> datas = TradeInfoCycleArray.getInstance();
-                int size = datas.getSize();
+                int size = datas.capacity();
                 for(int i = 0; i < size ; ++i){
                     System.out.println( i + ":" + datas.get(i) );
                 }
