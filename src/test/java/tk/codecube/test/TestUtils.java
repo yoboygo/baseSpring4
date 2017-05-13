@@ -13,6 +13,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.ParseException;
@@ -21,15 +22,21 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import org.apache.commons.io.output.FileWriterWithEncoding;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.util.EntityUtils;
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 
 public class TestUtils {
     
@@ -163,4 +170,129 @@ public class TestUtils {
         return doGet(_url,new HashMap<String,String>());
     }
     
+    /**
+     * @Dec 将JSONArray转换成List
+     * @param datas
+     * @return
+     * 2017年5月12日 上午11:21:51 songjl
+     */
+    public static List<Map<String,Object>> convertJSONArrayToList(JSONArray datas){
+        List<Map<String,Object>> retVal = new ArrayList<Map<String,Object>>();
+        for(Object data : datas){
+            Map<String,Object> item = new HashMap<String,Object>();
+            JSONObject jo = JSONObject.fromObject(data);
+            Iterator<?> iterator = jo.keys();
+            while(iterator.hasNext()){
+                String key = iterator.next().toString();
+                item.put(key, jo.get(key));
+            }
+            retVal.add(item);
+        }
+        return retVal;
+    }
+    
+    /**
+     * @Dec 除一个除数
+     * @param datas
+     * @param divide
+     * @return
+     * 2017年5月12日 下午1:59:44 songjl
+     */
+    public static List<Map<String,Object>> convertJSONArrayToList(JSONArray datas,BigDecimal divide,String field){
+        List<Map<String,Object>> retVal = new ArrayList<Map<String,Object>>();
+        for(Object data : datas){
+            Map<String,Object> item = new HashMap<String,Object>();
+            JSONObject jo = JSONObject.fromObject(data);
+            Iterator<?> iterator = jo.keys();
+            while(iterator.hasNext()){
+                String key = iterator.next().toString();
+                String val = jo.getString(key);
+                if(key.equals(field)){
+                    
+                    val = new BigDecimal(val).divide(divide).toPlainString();
+                }
+                item.put(key, val);
+            }
+            retVal.add(item);
+        }
+        return retVal;
+    }
+    
+    /**
+     * @Dec 测试解析字符串
+     * @param purchaseCount
+     * @return
+     * @throws ParseException
+     * 2017年5月13日 上午9:35:22 songjl
+     */
+    public static String buildPurchaseOffLineCount(List<Map<String,Object>> purchaseCount) throws ParseException {
+        List<Map<String,Object>> ret = new ArrayList<Map<String,Object>>();
+        List<Map<String,Object>> temp = new ArrayList<Map<String,Object>>();
+        Set<String> keyValidata = new HashSet<String>();
+        
+        String preDate = null;
+        for(Map<String,Object> data : purchaseCount){
+            Map<String,Object> item = new HashMap<String, Object>();
+            
+            //计算两个日期间的间隔天数，用0补全节假日的数据
+            if(preDate != null){
+                List<String> missDays = calculateIntervalDays(preDate,data.get("date").toString());
+                for(String d : missDays){
+                    Map<String,Object> e = new HashMap<String, Object>();
+                    String ix = StringUtils.substring(d,6,8);
+                    if(keyValidata.contains(ix)){
+                        ix = ix + "'";
+                    }
+                    keyValidata.add(ix);
+                    String[] val = {"0"}; 
+                    e.put("x", ix);
+                    e.put("y", val);
+                    temp.add(e);
+                }
+            }
+            preDate = data.get("date").toString();
+
+            
+            String x = StringUtils.substring(data.get("date").toString(),6,8);
+            if(keyValidata.contains(x)){
+                x = x + "'";
+            }
+            keyValidata.add(x);
+            
+            String[] val = {data.get("successCount").toString()};
+            item.put("x", x);
+            item.put("y", val);
+            temp.add(item);
+        }
+        //过滤出30个
+        int start = temp.size() - 31;
+        start = start > 0 ? start : 0;
+        for(int i = start ; i < temp.size() ; ++i){
+            ret.add(temp.get(i));
+        }
+        return JSONArray.fromObject(ret).toString();
+    }
+    
+    /**
+     * @Dec 将一个对象装换成JSONObject
+     * @param o
+     * @return
+     * @throws IntrospectionException
+     * @throws IllegalAccessException
+     * @throws IllegalArgumentException
+     * @throws InvocationTargetException
+     * 2017年5月13日 下午6:13:23 songjl
+     */
+    public static JSONObject objectToJson(Object o) throws IntrospectionException, IllegalAccessException, IllegalArgumentException, InvocationTargetException{
+        
+        JSONObject ret = new JSONObject();
+        BeanInfo bi = Introspector.getBeanInfo(o.getClass());
+        PropertyDescriptor[] bpds = bi.getPropertyDescriptors();
+        for(PropertyDescriptor bpd : bpds){
+            Method read = bpd.getReadMethod();
+            Object val = read.invoke(o);
+            ret.put(bpd.getName(),val);
+        }
+        return ret;
+    }
 }
