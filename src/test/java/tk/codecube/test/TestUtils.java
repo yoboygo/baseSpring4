@@ -11,6 +11,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
@@ -292,6 +293,16 @@ public class TestUtils {
             Method read = bpd.getReadMethod();
             Object val = read.invoke(o);
             ret.put(bpd.getName(),val);
+        }
+        return ret;
+    }
+    
+    public static JSONObject objectToJsonUseFields(Object o) throws IllegalArgumentException, IllegalAccessException {
+        JSONObject ret = new JSONObject();
+        Field[] fields = o.getClass().getDeclaredFields();
+        for(Field field : fields){
+           Object val = field.get(o);
+           ret.put(field.getName(), val);
         }
         return ret;
     }

@@ -10,17 +10,21 @@ import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import org.apache.commons.lang.math.RandomUtils;
 import org.apache.http.client.ClientProtocolException;
 import org.junit.Test;
-import ch.qos.logback.core.rolling.helper.IntegerTokenConverter;
-import net.sf.json.JSON;
+
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
@@ -245,7 +249,7 @@ public class TestParseDataV {
      * @throws IllegalAccessException 
      */
     @Test
-    public void tesxFlyLine() throws ClientProtocolException, URISyntaxException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IntrospectionException{
+    public void testFlyLine() throws ClientProtocolException, URISyntaxException, IOException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, IntrospectionException{
         int total = 100;//随机生成飞线的数量
         String url =  baseUrl + "?busiType=DataVAPIQryYebPurchaseAppDispFlyingline&channelId=0202";
         String request = TestUtils.doGet(url);
@@ -257,7 +261,8 @@ public class TestParseDataV {
         List<City> destLocation = geDestLocation(cityLocation,locationCalculate);
         
         for(City c : destLocation){
-            JSONObject from =  TestUtils.objectToJson(c);
+//            JSONObject from =  TestUtils.objectToJson(c);
+            JSONObject from =  TestUtils.objectToJsonUseFields(c);
             JSONObject item = new JSONObject();
             item.put("from", from);
             item.put("to", to);
@@ -392,7 +397,34 @@ public class TestParseDataV {
         
     }
     
+    @Test
+    public void testGetNull(){
+    	Map<String,String> datas = new HashMap<String,String>();
+    	datas.put("a", "123");
+    	datas.put("b", "456");
+    	String s = null;
+    	System.out.println(datas.get(s));
+    }
     
+    @Test
+    public void testDate(){
+        Calendar start = Calendar.getInstance();
+        System.err.println(convertToISO8601(start.getTime()));
+    }
+    
+    public String convertToISO8601(Date date) {
+    	SimpleDateFormat iso8601Format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+    	iso8601Format.setTimeZone(TimeZone.getTimeZone("GMT+00:00"));
+        return iso8601Format.format(date);
+    }
+    @Test
+    public void timeFormatTest(){
+    	//145717
+    	Calendar time = Calendar.getInstance();
+    	time.setTimeInMillis(145717);
+    	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    	System.out.println(sdf.format(time.getTime()));
+    }
 }
 
 class City{
