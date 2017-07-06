@@ -3,9 +3,14 @@ package tk.codecube.test;
 import java.beans.IntrospectionException;
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
 import java.net.URISyntaxException;
@@ -21,12 +26,13 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.apache.commons.lang.math.RandomUtils;
-import org.apache.http.client.ClientProtocolException;
-import org.junit.Test;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
+import org.apache.commons.lang.math.RandomUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.client.ClientProtocolException;
+import org.junit.Test;
 
 public class TestParseDataV {
     
@@ -425,6 +431,88 @@ public class TestParseDataV {
     	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     	System.out.println(sdf.format(time.getTime()));
     }
+    
+    @Test
+    public void testJSONParse() throws UnsupportedEncodingException, FileNotFoundException, IOException{
+    	String dataPath = "src/test/resources/data/YebAccount.data";
+    	Pattern jsonValPattern = Pattern.compile("\"(\\w+)\":\"(\\S+)\"");
+    	try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File(dataPath)),"UTF-8"))){
+    		Map<String, String> commonKv = new HashMap<String, String>();
+    		Map<String, String> tempKvs = new HashMap<String, String>();
+    		while(br.ready()){
+    			String line = br.readLine();
+    			line = line.replace(",", ", ");
+    			Matcher jsonVal = jsonValPattern.matcher(line);
+            	while(jsonVal.find()){
+            		tempKvs.put(jsonVal.group(1), jsonVal.group(2));
+            	}
+            	zxFillupCommonKv(commonKv, tempKvs);
+            	
+            	System.out.println(commonKv);
+    		}
+    		
+    	}
+    	
+    	
+    }
+    
+    private void zxFillupCommonKv(Map<String, String> commonKv, Map<String, String> tempKvs) {
+        commonKv.put("IGNORE","false");
+        // 直销固定销售商代码242
+        commonKv.put("distributorcode", "242");
+        commonKv.put("alino", tempKvs.get("contractNo"));
+        commonKv.put("contractno", tempKvs.get("contractNo"));
+        commonKv.put("userid", tempKvs.get("userId"));
+        commonKv.put("subcardno", tempKvs.get("subCardNo"));
+        
+        String sysid = StringUtils.substring(commonKv.get("alino"), -3);
+        commonKv.put("nodeid", sysid);
+        
+        commonKv.put("sysid", "2");// g_sysid对应sysid
+        commonKv.put("tano", "H0");
+        commonKv.put("certid", tempKvs.get("certId"));
+        commonKv.put("idvaliddate", tempKvs.get("idValidDate"));
+        commonKv.put("hostname", tempKvs.get("hostname"));
+        commonKv.put("postcode", tempKvs.get("postCode"));
+        commonKv.put("investorname", tempKvs.get("investorName"));
+        commonKv.put("invtp", tempKvs.get("isindividual"));// isindividual对应invtp
+                                                           // 0-机构,1-个人
+        commonKv.put("nationality", tempKvs.get("nationality"));
+        commonKv.put("certificatetype", tempKvs.get("certType"));// certtype对应certificatetype
+        // 如果证件类型不是身份证,则记录忽略
+        String certificatetype = commonKv.get("certificatetype");
+        if (!"0".equalsIgnoreCase(certificatetype)) {
+            commonKv.put("IGNORE","true");
+            return;
+        }
+        commonKv.put("certificateno", tempKvs.get("certificateNo"));
+        // 如果性别为空,由身份证取性别
+        String gender = tempKvs.get("gender");
+        if (StringUtils.isNotEmpty(gender)) {
+            commonKv.put("sex", Integer.parseInt(gender) % 2 + "");// gender(1-男,2-女)对应sex(1-男,0-女)
+        } else {
+            String certificateno = commonKv.get("certificateno");
+            String sex = Integer.parseInt(certificateno.substring(16, 17)) % 2 + "";
+            commonKv.put("sex", sex);
+        }
+        commonKv.put("investorsbirthday", tempKvs.get("investorBirthday"));
+        commonKv.put("vocationcode", tempKvs.get("vocationCode"));
+        commonKv.put("email", tempKvs.get("email"));
+        commonKv.put("mobiletelno", tempKvs.get("mobilePhone"));// mobilephone对应mobiletelno
+        commonKv.put("hometelno", tempKvs.get("homeTel"));
+        commonKv.put("fax", tempKvs.get("fax"));
+        commonKv.put("extension", tempKvs.get("extension"));
+        commonKv.put("officetelno", tempKvs.get("officetel"));
+        commonKv.put("address", tempKvs.get("address"));
+        commonKv.put("investmentexperience", tempKvs.get("investmentExperience"));
+        commonKv.put("paycenterid", "0202");
+        commonKv.put("profitaccountno", tempKvs.get("profitAccountNo"));
+        commonKv.put("operorg", "9999");
+        commonKv.put("version", tempKvs.get("version"));
+        commonKv.put("channelid", tempKvs.get("channelId"));
+        commonKv.put("instid", tempKvs.get("instId"));
+    }
+    
 }
 
 class City{
